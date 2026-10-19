@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <style>
+        /* 照片墙外层容器 */
+        .photo-wall-container {
+            width: 100%;
+            padding: 50px 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 横向滚动条容器 */
+        .photo-strip {
+            display: flex;
+            gap: 30px;
+            overflow-x: auto;
+            padding: 40px 10%; /* 左右留白，让照片不贴边 */
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            /* 隐藏默认滚动条 */
+            scrollbar-width: none;
+        }
+        .photo-strip::-webkit-scrollbar { display: none; }
+
+        /* 单个照片卡片（拍立得风格） */
+        .photo-item {
+            flex: 0 0 auto; /* 防止被压缩 */
+            width: 260px;
+            background: white;
+            padding: 12px 12px 40px 12px;
+            box-shadow: 5px 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid #ddd;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+        }
+
+        /* 奇偶数照片倾斜角度不同，制造“随手扔”的感觉 */
+        .photo-item:nth-child(odd) { transform: rotate(-3deg) translateY(10px); }
+        .photo-item:nth-child(even) { transform: rotate(2deg) translateY(-10px); }
+        .photo-item:nth-child(3n) { transform: rotate(1.5deg) translateY(5px); }
+
+        /* 悬停效果：变正、放大、阴影加深 */
+        .photo-item:hover {
+            transform: rotate(0deg) scale(1.1) translateY(-15px) !important;
+            box-shadow: 15px 25px 50px rgba(0,0,0,0.15);
+            z-index: 10;
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            filter: sepia(10%); /* 淡淡的复古滤镜 */
+            transition: 0.3s;
+        }
+
+        .photo-item:hover img { filter: sepia(0%); }
+
+        /* 照片下方的手写体文字 */
+        .photo-caption {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-family: "Kaiti", "STKaiti", serif; /* 尝试调用楷体模拟手写 */
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* 装饰：胶带效果 */
+        .photo-item::before {
+            content: "";
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            width: 80px;
+            height: 25px;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(2px);
+            transform: translateX(-50%) rotate(-2deg);
+            border-left: 2px dashed rgba(0,0,0,0.05);
+            border-right: 2px dashed rgba(0,0,0,0.05);
+        }
+
+        /* 滑动引导文字 */
+        .scroll-hint {
+            text-align: center;
+            font-size: 12px;
+            color: #bbb;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: -10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="photo-wall-container">
+        <div class="scroll-hint">← Swipe to Explore →</div>
+
+        <div class="photo-strip">
+            <!-- 照片 1 -->
+            <div class="photo-item">
+                <img src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=500&q=80" alt="Italy">
+                <div class="photo-caption">五渔村的午后</div>
+            </div>
+
+            <!-- 照片 2 -->
+            <div class="photo-item">
+                <img src="https://images.unsplash.com/photo-1523731407965-2430cd12f5e4?auto=format&fit=crop&w=500&q=80" alt="Berlin">
+                <div class="photo-caption">柏林墙的涂鸦</div>
+            </div>
+
+            <!-- 照片 3 -->
+            <div class="photo-item">
+                <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=500&q=80" alt="Mountain">
+                <div class="photo-caption">清晨的雪山推演</div>
+            </div>
+
+            <!-- 照片 4 -->
+            <div class="photo-item">
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=500&q=80" alt="Lake">
+                <div class="photo-caption">湖边的实验灵感</div>
+            </div>
+
+            <!-- 照片 5 -->
+            <div class="photo-item">
+                <img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=500&q=80" alt="Cabin">
+                <div class="photo-caption">深山里的周末</div>
+            </div>
+
+            <!-- 照片 6 -->
+            <div class="photo-item">
+                <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=500&q=80" alt="Boat">
+                <div class="photo-caption">划向未知的远方</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 可选：添加简单的 JS 增强滚轮体验 -->
+    <script>
+        const scrollContainer = document.querySelector('.photo-strip');
+        scrollContainer.addEventListener('wheel', (evt) => {
+            evt.preventDefault();
+            scrollContainer.scrollLeft += evt.deltaY;
+        });
+    </script>
+</body>
+</html>

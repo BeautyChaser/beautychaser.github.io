@@ -1,0 +1,55 @@
+:root {
+  color-scheme: light;
+  --paper: #f4f1e8;
+  --paper-light: #fcfaf4;
+  --ink: #302e27;
+  --muted: #777365;
+  --olive: #727344;
+  --rule: #d8d3c5;
+  --mono: 'Cascadia Code', 'SFMono-Regular', Consolas, 'Courier New', monospace;
+  --serif: 'Source Han Serif SC', 'Noto Serif CJK SC', 'Songti SC', SimSun, Georgia, serif;
+  font-family: var(--serif);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  font-size: 16px;
+  line-height: 1.75;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(to right, #d9d4c544 1px, transparent 1px),
+    linear-gradient(to bottom, #d9d4c544 1px, transparent 1px),
+    linear-gradient(to right, #d9d4c540 1px, transparent 1px),
+    linear-gradient(to bottom, #d9d4c540 1px, transparent 1px);
+  background-size: 22px 22px, 22px 22px, 110px 110px, 110px 110px;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  opacity: 0.12;
+  pointer-events: none;
+  background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+}
+#app { width: 100%; min-height: 100vh; }
+a { color: inherit; }
+button, input { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+a:focus-visible, button:focus-visible, input:focus-visible {
+  outline: 2px solid var(--olive);
+  outline-offset: 5px;
+}
+::selection { color: #fffdf4; background: var(--olive); }
+.eyebrow { margin: 0; font: 0.8rem/1.6 var(--mono); letter-spacing: 0.06em; color: #686354; }
+@media (max-width: 950px) { html { scroll-padding-top: 140px; } }
+@media (max-width: 600px) { html { scroll-padding-top: 190px; } }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Lab & Life</title>
+    <style>
+        /* --- 变量定义 --- */
+        :root {
+            --bg-paper: #f8f7f2;      /* 纸张底色 */
+            --ink-black: #1a1a1a;     /* 墨水黑 */
+            --accent-blue: #0047bb;   /* 科技蓝（低饱和） */
+            --accent-orange: #d4a373; /* 生活暖色 */
+            --grid-line: #e6e4dd;     /* 网格线 */
+            --font-serif: "Source Han Serif SC", "Noto Serif CJK SC", serif;
+            --font-mono: "Fira Code", "Courier New", monospace;
+        }
+
+        /* --- 基础样式 --- */
+        * { box-sizing: border-box; }
+        body {
+            margin: 0; padding: 0;
+            background-color: var(--bg-paper);
+            /* 网格背景：学术严谨感 */
+            background-image:
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 40px 40px;
+            color: var(--ink-black);
+            font-family: var(--font-serif);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- 导航栏 --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 30px 5%;
+            border-bottom: 1px solid var(--ink-black);
+            margin: 0 5%;
+        }
+        .logo { font-size: 24px; font-weight: bold; letter-spacing: -1px; }
+        nav a {
+            text-decoration: none; color: var(--ink-black);
+            margin-left: 30px; font-family: sans-serif; font-size: 14px;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+
+        /* --- Hero Section (生活+学术) --- */
+        .hero {
+            position: relative; margin-bottom: 100px;
+            display: flex; align-items: center; gap: 40px;
+        }
+        .hero-image {
+            width: 60%; height: 450px; overflow: hidden;
+            border: 1px solid var(--ink-black);
+            transform: rotate(-1deg); /* 灵动感 */
+            box-shadow: 20px 20px 0px var(--grid-line);
+        }
+        .hero-image img { width: 100%; height: 100%; object-fit: cover; }
+        .hero-text { width: 40%; }
+        .hero-text h1 { font-size: 64px; line-height: 1.1; margin: 0; }
+        .hero-meta { font-family: var(--font-mono); font-size: 12px; color: #888; margin-top: 20px; }
+
+        /* --- 自动轮播看板 (科技感) --- */
+        .board-header { margin-left: 5%; font-family: var(--font-mono); font-size: 14px; color: var(--accent-blue); }
+        .carousel-wrapper {
+            width: 100%; overflow: hidden; padding: 40px 0;
+            background: rgba(0,0,0,0.02); margin: 50px 0;
+            border-top: 1px solid var(--grid-line); border-bottom: 1px solid var(--grid-line);
+        }
+        .carousel-track { display: flex; width: max-content; animation: scroll 30s linear infinite; }
+        .carousel-track:hover { animation-play-state: paused; }
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        .project-card {
+            width: 320px; margin: 0 15px; background: #fff; padding: 20px;
+            border: 1px solid var(--ink-black); position: relative;
+            transition: 0.3s;
+        }
+        .project-card:hover { transform: translateY(-5px); box-shadow: 10px 10px 0 var(--accent-blue); }
+        .card-type { font-family: var(--font-mono); font-size: 10px; background: var(--ink-black); color: #fff; padding: 2px 6px; }
+        .progress-bar { height: 2px; background: #eee; margin-top: 15px; }
+        .progress-fill { height: 100%; background: var(--accent-blue); }
+
+        /* --- 思考卡片布局 (学术风/灵动) --- */
+        .thought-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 40px; margin-top: 80px;
+        }
+        .thought-card {
+            background: white; border: 1px solid var(--grid-line);
+            padding: 30px; position: relative;
+        }
+        .thought-card::after { /* 模拟页码装饰 */
+            content: "P." attr(data-page); position: absolute; top: 10px; right: 15px;
+            font-family: var(--font-mono); font-size: 10px; opacity: 0.4;
+        }
+        .thought-card h3 { font-size: 24px; margin-top: 0; text-decoration: underline; }
+        .thought-card p { font-size: 16px; color: #444; }
+
+        /* --- 照片墙 (生活感) --- */
+        .photo-wall {
+            display: flex; gap: 20px; overflow-x: auto; padding: 40px 5%;
+            scrollbar-width: none;
+        }
+        .photo-item {
+            flex: 0 0 auto; width: 200px; background: #fff; padding: 10px 10px 30px 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); transform: rotate(calc(var(--r) * 1deg));
+        }
+        .photo-item img { width: 100%; height: 150px; object-fit: cover; }
+        .photo-caption { font-size: 12px; text-align: center; margin-top: 10px; font-style: italic; color: #777; }
+
+        /* --- 页脚 --- */
+        footer {
+            padding: 80px 5%; border-top: 1px solid var(--ink-black);
+            display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">LOG_LAB.</div>
+        <nav>
+            <a href="#">Archives</a>
+            <a href="#">Projects</a>
+            <a href="#">Gallery</a>
+            <a href="#">About</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1493246507139-91e8bef99c02?auto=format&fit=crop&w=1200&q=80" alt="Landscape">
+            </div>
+            <div class="hero-text">
+                <h1>理性的推演，<br>感性的栖居。</h1>
+                <p>这里是一个关于数值仿真、计算物理以及深秋徒步记录的数字花园。</p>
+                <div class="hero-meta">
+                    LOC: 31.2304° N, 121.4737° E <br>
+                    STATUS: SEARCHING FOR ELEGANCE
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 项目看板 (自动轮播) -->
+    <div class="board-header">/ CURRENT_PROJECTS_DASHBOARD</div>
+    <div class="carousel-wrapper">
+        <div class="carousel-track">
+            <!-- 卡片 1 -->
+            <div class="project-card">
+                <span class="card-type">RESEARCH</span>
+                <h4>Allen-Cahn 2D Solver</h4>
+                <p style="font-size: 13px;">优化相场模型的显式迭代步长控制算法。</p>
+                <div class="progress-bar"><div class="progress-fill" style="width: 85%;"></div></div>
+            </div>
+            <!-- 卡片 2 -->
+            <div class="project-card">
+                <span class="card-type">LIFE</span>
+                <h4>Kyoto Photo Essay</h4>
+                <p style="font-size: 13px;">整理 2023 秋季京都摄影作品，探讨光影的颗粒感。</p>
+                <div class="progress-bar"><div class="progress-fill" style="width: 40%;"></div></div>
+            </div>
+            <!-- 卡片 3 -->
+            <div class="project-card">
+                <span class="card-type">TECH</span>
+                <h4>Obsidian PKM Flow</h4>
+                <p style="font-size: 13px;">构建基于 Zettelkasten 方法的自动化文献笔记系统。</p>
+                <div class="progress-bar"><div class="progress-fill" style="width: 60%;"></div></div>
+            </div>
+            <!-- 复制一遍以实现无缝 -->
+            <div class="project-card">
+                <span class="card-type">RESEARCH</span>
+                <h4>Allen-Cahn 2D Solver</h4>
+                <p style="font-size: 13px;">优化相场模型的显式迭代步长控制算法。</p>
+                <div class="progress-bar"><div class="progress-fill" style="width: 85%;"></div></div>
+            </div>
+            <div class="project-card">
+                <span class="card-type">LIFE</span>
+                <h4>Kyoto Photo Essay</h4>
+                <p style="font-size: 13px;">整理 2023 秋季京都摄影作品，探讨光影的颗粒感。</p>
+                <div class="progress-bar"><div class="progress-fill" style="width: 40%;"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- 思考卡片区 -->
+        <div class="board-header">/ RECENT_THOUGHTS</div>
+        <div class="thought-grid">
+            <div class="thought-card" data-page="042">
+                <h3>第一性原理与算法优化</h3>
+                <p>在处理 AC 方程时，我们往往关注数值稳定性，但回归到物理本质，界面的能量耗散才是核心...</p>
+            </div>
+            <div class="thought-card" data-page="015" style="border: 1px dashed var(--accent-orange);">
+                <span style="color:var(--accent-orange); font-size: 12px; font-weight: bold;">[ 随笔 ]</span>
+                <h3>大雾山清晨的色彩</h3>
+                <p>那种介于普鲁士蓝和薄雾灰之间的颜色，是任何数码传感器都难以精准捕捉的...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 照片墙 -->
+    <div class="photo-wall">
+        <div class="photo-item" style="--r: -2">
+            <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=400" alt="1">
+            <div class="photo-caption">水光潋滟</div>
+        </div>
+        <div class="photo-item" style="--r: 3">
+            <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400" alt="2">
+            <div class="photo-caption">山间记录</div>
+        </div>
+        <div class="photo-item" style="--r: -1">
+            <img src="https://images.unsplash.com/photo-1500622944204-b135684e99fd?w=400" alt="3">
+            <div class="photo-caption">光影习作</div>
+        </div>
+        <div class="photo-item" style="--r: 2">
+            <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400" alt="4">
+            <div class="photo-caption">森林深处</div>
+        </div>
+    </div>
+
+    <footer>
+        <div>DESIGNED BY YOUR_NAME © 2024</div>
+        <div>STAY RIGOROUS, STAY CURIOUS.</div>
+        <div>LAST_BUILD: 2024.11.20</div>
+    </footer>
+
+</body>
+</html>

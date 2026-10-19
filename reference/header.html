@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Synthesis Lab | Orbital Navigation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- 引入 FontAwesome 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #050505;
+            color: #e5e5e5;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .mono { font-family: 'Fira Code', monospace; }
+
+        /* ------------------ 星系导航核心样式 ------------------ */
+        :root {
+            --r1: 110px; /* 一级轨道半径 */
+            --r2: 200px; /* 二级轨道半径 */
+            --color-lab: #00d4ff;
+            --color-world: #ff9f43;
+            --color-about: #a29bfe;
+        }
+
+        /* 导航总容器 (定位于左上角) */
+        .orbital-system {
+            position: fixed;
+            top: 120px;
+            left: 120px;
+            width: 60px;
+            height: 60px;
+            z-index: 9999;
+        }
+
+        /* 【核心黑科技：防鼠标滑出安全区】
+           当悬停时，生成一个隐形的圆形保护盾，防止鼠标在轨道空隙间移动时菜单缩回 */
+        .orbital-system::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            background: transparent;
+            transition: width 0.3s, height 0.3s;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .orbital-system:hover::before {
+            width: 500px;
+            height: 500px;
+            pointer-events: auto; /* 激活保护盾 */
+        }
+
+        /* 轨道背景线 */
+        .orbit-track {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            border-radius: 50%;
+            border: 1px dashed rgba(255, 255, 255, 0.05);
+            pointer-events: none;
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .track-1 { width: calc(var(--r1) * 2); height: calc(var(--r1) * 2); z-index: 2; }
+        .track-2 { width: calc(var(--r2) * 2); height: calc(var(--r2) * 2); z-index: 1; }
+
+        /* 悬停时激活轨道 */
+        .orbital-system:hover .track-1 { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        .orbital-system:hover .track-2 { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
+
+        /* 中心 Home 按钮 */
+        .center-node {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 54px; height: 54px;
+            background: #111;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+            transition: all 0.4s;
+        }
+        .orbital-system:hover .center-node {
+            border-color: var(--color-lab);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
+            transform: translate(-50%, -50%) rotate(45deg); /* 旋转增加动感 */
+        }
+
+        /* 基础节点样式 */
+        .node {
+            position: absolute;
+            top: 50%; left: 50%;
+            padding: 6px 16px;
+            background: rgba(15, 15, 15, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            color: #aaa;
+            font-size: 13px;
+            white-space: nowrap;
+            cursor: pointer;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 5;
+            /* 核心数学公式：通过 CSS sin/cos 沿角度和半径进行平移定位 */
+            transform: translate(
+                    calc(var(--current-r) * cos(var(--angle)) - 50%),
+                    calc(var(--current-r) * sin(var(--angle)) - 50%)
+            ) scale(0.5);
+            /* 弹性物理动画 */
+            transition:
+                    transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+                    opacity 0.4s,
+                    border-color 0.3s,
+                    color 0.3s;
+            --current-r: 0px; /* 初始收缩在中心点 */
+        }
+
+        /* 一级节点激活 */
+        .orbital-system:hover .node.l1 {
+            opacity: 1;
+            pointer-events: auto;
+            --current-r: var(--r1);
+            transform: translate(
+                    calc(var(--current-r) * cos(var(--angle)) - 50%),
+                    calc(var(--current-r) * sin(var(--angle)) - 50%)
+            ) scale(1);
+        }
+
+        /* 二级节点激活（当其所属的分组被 Hover 时） */
+        .menu-group:hover .node.l2 {
+            opacity: 1;
+            pointer-events: auto;
+            --current-r: var(--r2);
+            transform: translate(
+                    calc(var(--current-r) * cos(var(--angle)) - 50%),
+                    calc(var(--current-r) * sin(var(--angle)) - 50%)
+            ) scale(1);
+        }
+
+        /* 不同模块的个性化色彩与发光（物理场的体现） */
+        #group-lab:hover .node.l1 { border-color: var(--color-lab); color: var(--color-lab); box-shadow: 0 0 15px rgba(0, 212, 255, 0.1); }
+        #group-lab .node.l2:hover { border-color: var(--color-lab); color: white; }
+
+        #group-world:hover .node.l1 { border-color: var(--color-world); color: var(--color-world); box-shadow: 0 0 15px rgba(255, 159, 67, 0.1); }
+        #group-world .node.l2:hover { border-color: var(--color-world); color: white; }
+
+        #group-about:hover .node.l1 { border-color: var(--color-about); color: var(--color-about); box-shadow: 0 0 15px rgba(162, 155, 254, 0.1); }
+    </style>
+</head>
+<body class="min-h-screen">
+
+<!-- 星系导航系统 -->
+<nav class="orbital-system">
+
+    <!-- 背景星轨 -->
+    <div class="orbit-track track-1"></div>
+    <div class="orbit-track track-2"></div>
+
+    <!-- 核心物理核 (Home) -->
+    <div class="center-node">
+        <i class="fa-solid fa-bahai text-lg"></i> <!-- 象征能量核心的图标 -->
+    </div>
+
+    <!-- 1号星系群：MyLab (分布在 0度 / 东方向) -->
+    <div class="menu-group" id="group-lab">
+        <!-- 一级节点 -->
+        <div class="node l1 mono font-medium" style="--angle: 0deg;">MyLab</div>
+        <!-- 二级节点 (围绕 Home 的外圈，分布在 -15度 和 15度 轨道) -->
+        <a href="#research" class="node l2 mono" style="--angle: -15deg;">/ Research</a>
+        <a href="#projects" class="node l2 mono" style="--angle: 15deg;">/ Projects</a>
+    </div>
+
+    <!-- 2号星系群：MyWorld (分布在 45度 / 东南方向) -->
+    <div class="menu-group" id="group-world">
+        <!-- 一级节点 -->
+        <div class="node l1 mono font-medium" style="--angle: 45deg;">MyWorld</div>
+        <!-- 二级节点 (围绕 Home 外圈，分布在 32度, 45度, 58度 轨道) -->
+        <a href="#insights" class="node l2 mono" style="--angle: 30deg;">/ Insights</a>
+        <a href="#photos" class="node l2 mono" style="--angle: 45deg;">/ Photos</a>
+        <a href="#habits" class="node l2 mono" style="--angle: 60deg;">/ Habits</a>
+    </div>
+
+    <!-- 3号星系群：About (分布在 90度 / 正南方向) -->
+    <div class="menu-group" id="group-about">
+        <!-- 一级节点 (无二级，直接点击跳转) -->
+        <a href="#about" class="node l1 mono font-medium" style="--angle: 90deg;">About</a>
+    </div>
+
+</nav>
+
+<!-- 主体内容占位 (用于展示滚动和遮罩效果) -->
+<main class="max-w-3xl mx-auto pt-60 px-6 space-y-40">
+    <section id="research" class="h-96 border-l border-white/10 pl-6">
+        <h2 class="text-xs uppercase tracking-widest text-blue-400 mb-4">MyLab / Research</h2>
+        <h1 class="text-3xl font-bold">统计力学视角下的 Transformer 泛化分析</h1>
+        <p class="text-gray-500 mt-4 leading-relaxed">正在撰写的论文，通过自旋玻璃模型（Spin Glass Models）来类比注意力机制在极高维度损失函数中的收敛路径...</p>
+    </section>
+
+    <section id="insights" class="h-96 border-l border-white/10 pl-6">
+        <h2 class="text-xs uppercase tracking-widest text-orange-400 mb-4">MyWorld / Insights</h2>
+        <h1 class="text-3xl font-bold">胶片相机的银盐反应与大模型的参数演化</h1>
+        <p class="text-gray-500 mt-4 leading-relaxed">光的粒子性打在溴化银晶体上产生潜影，这不就是一种极低能耗的无监督特征提取吗？我们是否能从中获得硬件层面的灵感...</p>
+    </section>
+</main>
+
+</body>
+</html>

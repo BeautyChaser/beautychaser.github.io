@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>项目看板 | 个人网站</title>
+    <style>
+        /* 1. 基础纸质感背景 */
+        :root {
+            --bg-color: #f7f6f2;
+            --grid-color: #e5e4de;
+            --text-main: #1a1a1a;
+            --accent-color: #ff9800; /* 亮色点缀 */
+            --card-white: rgba(255, 255, 255, 0.8);
+        }
+
+        body {
+            margin: 0; padding: 0;
+            background-color: var(--bg-color);
+            background-image:
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 30px 30px;
+            font-family: "Source Han Serif SC", "Noto Serif CJK SC", serif;
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        header {
+            padding: 40px 10%;
+            text-align: left;
+        }
+
+        .section-title {
+            font-size: 32px;
+            margin-bottom: 10px;
+            display: inline-block;
+            border-bottom: 2px solid var(--text-main);
+        }
+
+        /* 2. 自动轮播核心容器 */
+        .carousel-wrapper {
+            width: 100%;
+            overflow: hidden;
+            padding: 40px 0;
+            position: relative;
+        }
+
+        /* 动画轨道 */
+        .carousel-track {
+            display: flex;
+            width: max-content; /* 宽度由内容决定 */
+            animation: scroll 40s linear infinite; /* 匀速无限滚动 */
+        }
+
+        /* 悬停时停止动画 */
+        .carousel-track:hover {
+            animation-play-state: paused;
+        }
+
+        /* 3. 项目卡片样式 */
+        .project-card {
+            width: 350px;
+            margin: 0 20px;
+            background: var(--card-white);
+            border: 1px solid #333;
+            padding: 25px;
+            position: relative;
+            box-shadow: 8px 8px 0px rgba(0,0,0,0.05); /* 硬阴影 */
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            border-radius: 2px 10px 3px 8px / 8px 3px 10px 2px; /* 灵动的不规则圆角 */
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px) rotate(1deg);
+            box-shadow: 15px 15px 0px rgba(0,0,0,0.08);
+            background: #fff;
+        }
+
+        /* 卡片顶部的“纸胶带”装饰 */
+        .project-card::before {
+            content: "";
+            position: absolute;
+            top: -12px;
+            left: 30px;
+            width: 70px;
+            height: 24px;
+            background: rgba(0, 122, 255, 0.1);
+            backdrop-filter: blur(2px);
+            transform: rotate(-2deg);
+        }
+
+        .status-tag {
+            font-family: sans-serif;
+            font-size: 11px;
+            background: var(--text-main);
+            color: #fff;
+            padding: 2px 8px;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .card-desc {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            min-height: 70px;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #eee;
+            width: 100%;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--text-main);
+        }
+
+        /* 4. 动画定义 */
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); } /* 滚动到一半正好无缝衔接 */
+        }
+
+        /* 装饰：模糊渐变边缘，增加平滑感 */
+        .carousel-wrapper::before,
+        .carousel-wrapper::after {
+            content: "";
+            position: absolute;
+            top: 0; width: 15%; height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .carousel-wrapper::before {
+            left: 0;
+            background: linear-gradient(to right, var(--bg-color), transparent);
+        }
+        .carousel-wrapper::after {
+            right: 0;
+            background: linear-gradient(to left, var(--bg-color), transparent);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="section-title">项目看板</div>
+        <p style="opacity: 0.6; font-size: 14px;">AUTO-SCROLLING DASHBOARD // STATUS: ACTIVE</p>
+    </header>
+
+    <div class="carousel-wrapper">
+        <div class="carousel-track">
+
+            <!-- 项目卡片 1 -->
+            <div class="project-card">
+                <span class="status-tag">DOING</span>
+                <div class="card-title">Allen-Cahn 数值仿真系统</div>
+                <div class="card-desc">探索相场模型在复杂边界条件下的演化行为，目前正在优化求解器的计算效率。</div>
+                <div class="progress-bar"><div class="progress-fill" style="width: 75%;"></div></div>
+            </div>
+
+            <!-- 项目卡片 2 -->
+            <div class="project-card">
+                <span class="status-tag" style="background:#4caf50;">DONE</span>
+                <div class="card-title">个人知识库构建</div>
+                <div class="card-desc">基于 Obsidian 的第二大脑体系，涵盖了从学术文献到生活灵感的所有链接。</div>
+                <div class="progress-bar"><div class="progress-fill" style="width: 100%;"></div></div>
+            </div>
+
+            <!-- 项目卡片 3 -->
+            <div class="project-card">
+                <span class="status-tag" style="background:#2196f3;">PLANNING</span>
+                <div class="card-title">京都秋日摄影集</div>
+                <div class="card-desc">计划使用中画幅胶片相机记录京都深秋的色彩，重点在于光影的微妙平衡。</div>
+                <div class="progress-bar"><div class="progress-fill" style="width: 15%;"></div></div>
+            </div>
+
+            <!-- 项目卡片 4 -->
+            <div class="project-card">
+                <span class="status-tag">DOING</span>
+                <div class="card-title">数据可视化组件库</div>
+                <div class="card-desc">一套专为学术论文设计的极简图表库，强调黑白灰的专业质感。</div>
+                <div class="progress-bar"><div class="progress-fill" style="width: 40%;"></div></div>
+            </div>
+
+            <!-- 为了实现无缝滚动，需要将上面的卡片内容复制一遍 -->
+            <div class="project-card">
+                <span class="status-tag">DOING</span>
+                <div class="card-title">Allen-Cahn 数值仿真系统</div>
+                <div class="card-desc">探索相场模型在复杂边界条件下的演化行为，目前正在优化求解器的计算效率。</div>
+                <div class="progress-bar"><div class="progress-fill" style="width: 75%;"></div></div>
+            </div>
+            <div class="project-card">
+                <span class="status-tag" style="background:#4caf50;">DONE</span>
+                <div class="card-title">个人知识库构建</div>
+                <div class="card-desc">基于 Obsidian 的第二大脑体系，涵盖了从学术文献到生活灵感的所有链接。</div>
+                <div class="progress-bar"><div class="progress-fill" style="width: 100%;"></div></div>
+            </div>
+            <div class="project-card">
+                <span class="status-tag" style="background:#2196f3;">PLANNING</span>
+                <div class="card-title">京都秋日摄影集</div>
+                <div class="card-desc">计划使用中画幅胶片相机记录京都深秋的色彩，重点在于光影的微妙平衡。</div>
+                <div class="progress-bar"><div class="progress-fill" style="width: 15%;"></div></div>
+            </div>
+            <div class="project-card">
+                <span class="status-tag">DOING</span>
+                <div class="card-title">数据可视化组件库</div>
+                <div class="card-desc">一套专为学术论文设计的极简图表库，强调黑白灰的专业质感。</div>
+                <div class="progress-bar"><div class="progress-fill" style="width: 40%;"></div></div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer style="padding: 100px 10%; text-align: center; opacity: 0.3; font-family: monospace;">
+        &copy; 2024 DESIGNED FOR FLEXIBLE MINDS
+    </footer>
+
+</body>
+</html>

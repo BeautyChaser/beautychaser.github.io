@@ -1,0 +1,30 @@
+{
+  "name": "my_web_page",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "node scripts/check-translations.mjs && vite build && node scripts/sync-pages.mjs",
+    "check": "node --test scripts/content.test.mjs && node scripts/check-translations.mjs && node scripts/check-pages.mjs",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@kangc/v-md-editor": "^2.3.18",
+    "@traptitech/markdown-it-katex": "^3.6.0",
+    "github-markdown-css": "^5.9.0",
+    "katex": "^0.16.47",
+    "markdown-it-prism": "^3.0.1",
+    "prismjs": "^1.30.0",
+    "vue": "^3.5.31"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.5",
+    "markdown-it": "^14.1.1",
+    "vite": "^8.0.3",
+    "vite-plugin-vue-devtools": "^8.1.1"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  }
+}
