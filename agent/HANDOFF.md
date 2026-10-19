@@ -44,7 +44,10 @@
 - 英文数学文章正常渲染 81 处公式、无 KaTeX 错误；正文计算字号 17px，没有残留中文正文。工程文章和 News 英文全文同样验证通过。
 - 浏览器实测切换语言后文章 hash 不变，滚动位置保持 650px；刷新和新开根页面仍记住所选语言。
 - 已同步远程 `c52a983`，保留其自定义域名 `CNAME = callingforwind.top`，未改写远程历史。
-- 用户已明确授权正常提交、推送与线上验证。当前准备发布；部署和线上检查完成后，在此记录结果。
+- 用户已明确授权正常提交、推送与线上验证。业务版本 `78f012c788a8fa59e0feab3aae3599e21471ce57` 已正常推送到 `origin/main`。
+- 首次 Pages 工作流：https://github.com/BeautyChaser/beautychaser.github.io/actions/runs/39278787276 。构建日志确认发布包已经上传成功（artifact `12198014314`）；摘要和任务状态却持续显示 Queued，部署记录尚无成功状态，部署日志也未生成。
+- 首次线上检查：GitHub Pages 地址正常跳转到 `https://callingforwind.top/`，HTTPS 返回 200，但仍引用旧入口 `/assets/index-DGXaMbvn.js`；新入口 `/assets/index-BeSXR73w.js` 返回 404。因此当时不能判定新版已上线，也不能用“推送成功”代替线上验证。
+- 通过本次交接状态更新触发一次新的 Pages 发布尝试；最终应以新发布结果及正式站点资源版本为准。排查时同时检查构建日志与部署记录，避免只依据 Queued 摘要判断构建是否实际执行。
 
 ## 已知边界
 
