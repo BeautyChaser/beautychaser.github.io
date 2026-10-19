@@ -1,6 +1,6 @@
 # 最新交接
 
-更新日期：2026-10-19（Asia/Shanghai）。
+更新日期：2026-10-20（Asia/Shanghai）。
 
 ## 本次目标
 
@@ -45,9 +45,12 @@
 - 浏览器实测切换语言后文章 hash 不变，滚动位置保持 650px；刷新和新开根页面仍记住所选语言。
 - 已同步远程 `c52a983`，保留其自定义域名 `CNAME = callingforwind.top`，未改写远程历史。
 - 用户已明确授权正常提交、推送与线上验证。业务版本 `78f012c788a8fa59e0feab3aae3599e21471ce57` 已正常推送到 `origin/main`。
-- 首次 Pages 工作流：https://github.com/BeautyChaser/beautychaser.github.io/actions/runs/39278787276 。构建日志确认发布包已经上传成功（artifact `12198014314`）；摘要和任务状态却持续显示 Queued，部署记录尚无成功状态，部署日志也未生成。
-- 首次线上检查：GitHub Pages 地址正常跳转到 `https://callingforwind.top/`，HTTPS 返回 200，但仍引用旧入口 `/assets/index-DGXaMbvn.js`；新入口 `/assets/index-BeSXR73w.js` 返回 404。因此当时不能判定新版已上线，也不能用“推送成功”代替线上验证。
-- 通过本次交接状态更新触发一次新的 Pages 发布尝试；最终应以新发布结果及正式站点资源版本为准。排查时同时检查构建日志与部署记录，避免只依据 Queued 摘要判断构建是否实际执行。
+- 新版现已在正式域名上线：`https://callingforwind.top/index.html?lang=zh` 和 `https://callingforwind.top/index.html?lang=en`。GitHub Pages 域名仍正常跳转到自定义域名。
+- 正式站点 HTTPS 返回 200，入口已引用 `./assets/index-BeSXR73w.js`，与本地构建和已推送版本一致；已不再是旧入口 `/assets/index-DGXaMbvn.js`。
+- 线上浏览器实测：中英文首页和标题切换正常；搜索正文关键词 `迁移率` 找到 Allen–Cahn 文章并可打开。
+- 线上文章实测：中文 90 处公式、英文 81 处公式，KaTeX 错误均为 0；切换后文章 hash 保持不变，英文全文没有残留中文正文，阅读器计算字号为 17px。
+- 线上英文首页确认顶部 News、完整英文身份定位和 Callingforwind 联系账号正常呈现，1280px 视口没有整页横向溢出。窄屏验证结果见上方本地浏览器记录，不代表实机验证。
+- 发布曾有延迟：首次工作流 `39278787276` 的日志确认发布包上传成功，但摘要持续 Queued；文档提交 `5257368` 触发重试 `39281251508` 后，实际站点已切换到新版。最近查询的工作流摘要仍为 Queued/Waiting，不能将其记录为工作流已成功；本次上线结论来自正式站点资源版本与实际浏览器功能验证。
 
 ## 已知边界
 
@@ -59,4 +62,4 @@
 
 ## 后续维护入口
 
-从 `AGENTS.md` 开始阅读。若继续本次发布工作，先确认本地输出检查结果，再按 `MAINTENANCE.md` 提交、推送并验证 Pages；根据用户授权范围执行外部操作。
+从 `AGENTS.md` 开始阅读。本次功能已推送并在线验证；后续内容和样式修改按 `MAINTENANCE.md` 重新构建、提交、推送并验证正式站点。工作流摘要若延迟更新，结合实际站点版本、日志和部署记录判断，不重复改动已经验证的业务代码。

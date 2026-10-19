@@ -12,7 +12,7 @@
 
 - Git remote：`https://github.com/BeautyChaser/beautychaser.github.io.git`。
 - 默认维护分支：`main`。
-- 预期站点：`https://beautychaser.github.io/`。
+- 正式站点：`https://callingforwind.top/index.html`；GitHub Pages 地址 `https://beautychaser.github.io/` 跳转至此。
 - Vue 3、Vite 8、JavaScript / Vue SFC；部分组件使用 TypeScript 语法。
 - Markdown 由 `markdown-it` 渲染；公式使用 KaTeX；代码高亮使用 Prism。
 - 包管理器为 npm，使用 `package-lock.json` 锁定依赖，换机使用 `npm ci`。
