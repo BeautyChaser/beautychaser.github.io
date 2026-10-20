@@ -18,6 +18,7 @@
             <div class="item">
               <span class="key">{{ t('知乎：', 'Zhihu:') }}</span>
               <button type="button" class="val account-link" :aria-label="t('复制知乎账号 Callingforwind', 'Copy Zhihu account Callingforwind')" @click="handleIconClick('zhihu')">Callingforwind</button>
+              <a class="platform-home-link" :href="socialData.zhihu.profileUrl" target="_blank" rel="noopener noreferrer">{{ t('主页', 'Profile') }} ↗</a>
             </div>
             <div class="item">
               <span class="key">Github:</span>
@@ -52,6 +53,8 @@
             </button>
           </div>
 
+          <a v-if="activeKey && socialData[activeKey].profileUrl" class="platform-home-link active-profile-link" :href="socialData[activeKey].profileUrl" target="_blank" rel="noopener noreferrer">{{ t('前往主页', 'Visit profile') }} ↗</a>
+
           <div class="stamp-seal">{{ t('一起构建', "LET'S BUILD") }}</div>
 
           <!-- 复制提示 -->
@@ -71,6 +74,8 @@
 <script setup>
 import { ref, computed, onUnmounted } from 'vue';
 import { t } from '@/i18n.js';
+import newsConfig from '../../config/news-sources.json';
+const profile = id => newsConfig.sources.find(source => source.id === id).profileUrl;
 
 // 1. 配置所有社交媒体的数据
 const socialData = computed(() => ({
@@ -84,12 +89,14 @@ const socialData = computed(() => ({
     name: t('Bilibili 账号', 'Bilibili account'),
     iconText: 'Bili',
     label: 'Callingforwind',
+    profileUrl: profile('bilibili'),
     color: '#FB7299' // B站粉
   },
   in: {
     name: t('LinkedIn 账号', 'LinkedIn account'),
     iconText: 'In',
     label: 'Jinfeng Zhao',
+    profileUrl: profile('linkedin'),
     color: '#0077b5' // 领英蓝
   },
   rss: {
@@ -100,8 +107,9 @@ const socialData = computed(() => ({
   },
   zhihu: {
     name: t('知乎账号', 'Zhihu account'),
-    iconText: t('知乎', 'Zhi'),
+    iconText: 'ZH',
     label: 'Callingforwind',
+    profileUrl: profile('zhihu'),
     color: '#1769c2',
   },
 }));
@@ -149,6 +157,8 @@ onUnmounted(() => clearTimeout(copyTimer));
 </script>
 
 <style scoped>
+.platform-home-link { color: var(--olive); font-size: 0.95rem; text-underline-offset: 5px; }
+.active-profile-link { display: inline-block; margin-top: 18px; min-height: 36px; }
 /* --- 桌面与背景保持之前的木纹设计 --- */
 .desk-container {
   padding: 80px 32px 36px;

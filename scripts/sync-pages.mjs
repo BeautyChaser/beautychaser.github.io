@@ -7,7 +7,7 @@ const distRoot = join(projectRoot, 'dist')
 const manifestPath = join(projectRoot, '.pages-manifest.json')
 // These names belong to the source project and must never be published over.
 const reservedNames = new Set([
-  'src', 'public', 'scripts', 'agent', 'markdown', 'node_modules', 'dist', 'reference', 'design_logic',
+  'src', 'public', 'scripts', 'agent', 'markdown', 'config', 'node_modules', 'dist', 'reference', 'design_logic',
   'package.json', 'package-lock.json', 'vite.config.js', 'tsconfig.json',
   'jsconfig.json', 'readme.md', 'agents.md', 'logic.md', '-w',
 ])

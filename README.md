@@ -15,9 +15,11 @@ src/
   components/           # 页面和组件
   assets/               # 源图片、样式等资源
 markdown/               # 自动收录、支持标题和正文搜索的 Markdown 文章
-  news/                 # 首页顶部 News 动态，按日期命名
+  news/                 # 本站动态，与外站更新一起进入 News
+config/                 # 已确认的平台主页、订阅源和手工动态
 public/                 # 原样复制到发布目录的图标等文件
 scripts/                # 构建输出同步与验证
+.github/workflows/      # 公开订阅的定时同步
 agent/                  # 换电脑、换模型后的维护与交接资料
 AGENTS.md               # 后续模型的维护入口
 reference/              # 原项目的设计参考
@@ -66,12 +68,18 @@ GitHub Pages 发布目录与入口说明：[GitHub 官方文档](https://docs.gi
 
 先阅读根目录 `AGENTS.md`，再查看 `agent/README.md` 中的资料索引。项目背景、目录职责、开发发布流程以及最近交接状态均保存在仓库中，换电脑或换模型后可以继续使用。
 
-新增文章直接放入 `markdown/`，以第一个 `# 一级标题` 作为文章标题。放在 `markdown/news/` 下并以日期命名的文章会进入首页最上方的 News 栏。顶部搜索框支持标题、正文与多个空格分隔的关键词，不需要后端。发布前仍需构建并提交根目录输出，详见 `markdown/README.md`。
+新增文章直接放入 `markdown/`，以第一个 `# 一级标题` 作为文章标题。放在 `markdown/news/` 下并以日期命名的本站动态会与外站条目一起进入首页 News 栏和独立 News 页面。顶部搜索框支持 Markdown 标题、正文与多个空格分隔的关键词，不需要后端。发布前仍需构建并提交根目录输出，详见 `markdown/README.md`。
 
 页面按手机、平板和桌面自适应。已在 320–1440px 的多个视口以及横屏下验证导航、搜索与文章布局；长公式和表格使用局部横向滚动。
 
 整个网站支持中英文切换，包括文章全文、News、搜索提示与联系区。中文文章使用 `文章.md`，英文使用 `文章.en.md`，配对后按同一篇文章展示；构建前会检查两种版本齐全。语言选择保存在浏览器，分享页面可以使用 `?lang=zh` 或 `?lang=en`。正文约 17px，手机通过重排保证可读性。
 
-联系区已加入知乎账号 **Callingforwind**，支持展示和复制账号名。
+联系区已加入知乎账号 **Callingforwind**，图标使用 **ZH**，支持展示、复制账号名和前往真实主页。
+
+## 跨平台 News
+
+独立页面为 `index.html?lang=zh#news` / `index.html?lang=en#news`，提供知乎、bilibili、领英与本站更新的时间线、筛选和原文链接。主页配置在 `config/news-sources.json`，作者确认的条目在 `config/news-manual.json`。
+
+`npm run news:sync` 采集公开 RSS/Atom，`.github/workflows/sync-news.yml` 约每 30 分钟检查一次；浏览器打开时及每 5 分钟刷新公共快照。同步失败保留已有条目。2026-10-20 本机验证公共 RSSHub 返回 403/连接错误，尚未成功导入外站内容；领英个人动态受读取权限限制，目前使用作者收录与主页入口。页面可用与平台订阅可用是不同的验证结论，不能宣称三个平台已实时同步。配置可用订阅和收录方法见 `agent/NEWS_SYNC.md`。
 
 远程仓库保留自定义域名 `callingforwind.top`，由根目录 `CNAME` 配置。GitHub Pages 地址可能跳转到 [正式网站](https://callingforwind.top/index.html)。

@@ -1,0 +1,37 @@
+{
+  "liveFeedUrl": "https://raw.githubusercontent.com/BeautyChaser/beautychaser.github.io/main/public/news-feed.json",
+  "sources": [
+    {
+      "id": "zhihu",
+      "name": { "zh": "知乎", "en": "Zhihu" },
+      "short": "ZH",
+      "handle": "Callingforwind",
+      "profileUrl": "https://www.zhihu.com/people/zhu-yao-mei-zhui",
+      "hosts": ["zhihu.com", "www.zhihu.com", "zhuanlan.zhihu.com"],
+      "feeds": [
+        { "url": "https://rsshub.app/zhihu/posts/people/zhu-yao-mei-zhui", "kind": "article", "language": "zh" }
+      ]
+    },
+    {
+      "id": "bilibili",
+      "name": { "zh": "bilibili", "en": "bilibili" },
+      "short": "Bili",
+      "handle": "Callingforwind",
+      "profileUrl": "https://space.bilibili.com/354151470",
+      "hosts": ["www.bilibili.com", "bilibili.com", "space.bilibili.com", "b23.tv"],
+      "feeds": [
+        { "url": "https://rsshub.app/bilibili/user/video/354151470", "kind": "video", "language": "zh" },
+        { "url": "https://rsshub.app/bilibili/user/article/354151470", "kind": "article", "language": "zh" }
+      ]
+    },
+    {
+      "id": "linkedin",
+      "name": { "zh": "领英", "en": "LinkedIn" },
+      "short": "in",
+      "handle": "Jinfeng Zhao",
+      "profileUrl": "https://www.linkedin.com/in/jinfeng-zhao-641647296/",
+      "hosts": ["linkedin.com", "www.linkedin.com"],
+      "feeds": []
+    }
+  ]
+}

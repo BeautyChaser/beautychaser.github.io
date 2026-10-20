@@ -31,11 +31,17 @@
 | `src/data/content.js` | 配对译文、生成内容目录与双语检索，包含可独立测试的纯函数 | 是 |
 | `src/i18n.js` | 全站语言状态、文案选择、日期、语言链接与偏好保存 | 是 |
 | `src/components/WebMain.vue` | 首页与文章内容区域 | 是 |
+| `src/components/NewsStrip.vue` / `src/components/Page/NewsPage.vue` | 首页跨平台更新栏与独立 News 页面 | 是 |
+| `src/data/news.js` / `src/data/news-core.js` | 动态快照刷新、合并、本地化与链接校验 | 是 |
+| `config/news-sources.json` / `config/news-manual.json` | 用户确认的平台主页、订阅源与手工条目 | 是 |
+| `scripts/sync-news.mjs` / `scripts/news-feed.mjs` | 采集公开 RSS/Atom、保留缓存与同步状态 | 是 |
+| `public/news-feed.json` / 根目录 `news-feed.json` | 采集快照源文件 / 构建复制的公开快照 | 采集 / 通过构建更新 |
+| `.github/workflows/sync-news.yml` | 每 30 分钟采集、构建、提交快照并请求 Pages 更新 | 是 |
 | `src/components/Contact.vue` | 联系区与社交账号展示 | 是 |
 | `src/components/MarkdownLoader.vue` | Markdown、公式、代码渲染 | 是 |
 | `src/components/Page/ContentPage.vue` | 文章正文容器，阅读时按需加载渲染器 | 是 |
 | `markdown/` | 自动收录的 Markdown 源文章；README 不作为文章 | 是 |
-| `markdown/news/` | 首页顶部 News，文件名含日期，最近三条优先展示 | 是 |
+| `markdown/news/` | 本站动态，文件名含日期，与外站动态一起展示 | 是 |
 | `src/assets/` | 源图片和样式 | 是 |
 | `public/` | 原样复制的图标与 `.nojekyll` | 是 |
 | `vite.config.js` | 源码根目录、相对路径、构建目录与别名 | 是 |
@@ -62,5 +68,6 @@
 9. **全站中英文切换。** 默认中文，顶部切换按钮更新全部界面、文章与元数据，并保存浏览器偏好。URL 中 `?lang=en` / `?lang=zh` 可指定分享语言，优先于已保存偏好；文章 hash 保持不变。
 10. **译文按文件配对。** `.md` 或 `.zh.md` 对应中文，`.en.md` 对应英文；数据目录将它们合并为同一篇文章。搜索覆盖两种语言，结果只计一次并以当前语言显示。构建前必须通过双语完整性检查。
 11. **保留已有自定义域名。** 远程提交 `c52a983` 添加 `CNAME`，内容为 `callingforwind.top`；已快进同步，发布时保留。GitHub Pages 域名可能跳转到该域名，线上验证需检查最终地址。
+12. **独立的跨平台 News。** `#news` 渲染独立页面；首页顶部汇总本站与公开平台最新三条。知乎、bilibili 和领英的真实主页由用户提供。服务端定时采集与浏览器读取公共快照分开，失败保留最近成功内容；领英目前由作者收录，不宣称实时或自动抓取已成功。详见 `NEWS_SYNC.md`。
 
 最初参考工程来自 `D:\ProgramPj\MyWebPage\my_web_page`。该路径仅记录来源，不是构建依赖。原工程中的旧 README 包含强制推送步骤，当前维护不采用该流程。

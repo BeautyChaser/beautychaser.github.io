@@ -1,9 +1,13 @@
 <script setup>
-import { watchEffect } from 'vue'
+import { watchEffect, onMounted, onUnmounted } from 'vue'
 import { locale, t } from '@/i18n.js'
 import WebHeader from '@/components/WebHeader.vue'
 import WebMain from '@/components/WebMain.vue'
 import Contact from '@/components/Contact.vue'
+import { startNewsRefresh } from '@/data/news.js'
+let stopNewsRefresh
+onMounted(() => { stopNewsRefresh = startNewsRefresh() })
+onUnmounted(() => stopNewsRefresh?.())
 watchEffect(() => { document.documentElement.lang = locale.value === 'en' ? 'en' : 'zh-CN' })
 </script>
 

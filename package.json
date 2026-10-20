@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "node scripts/check-translations.mjs && vite build && node scripts/sync-pages.mjs",
-    "check": "node --test scripts/content.test.mjs && node scripts/check-translations.mjs && node scripts/check-pages.mjs",
+    "check": "node --test scripts/content.test.mjs scripts/news.test.mjs && node scripts/check-translations.mjs && node scripts/check-pages.mjs",
+    "news:sync": "node scripts/sync-news.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.5",
+    "fast-xml-parser": "^5.11.2",
     "markdown-it": "^14.1.1",
     "vite": "^8.0.3",
     "vite-plugin-vue-devtools": "^8.1.1"

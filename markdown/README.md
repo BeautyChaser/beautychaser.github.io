@@ -28,7 +28,7 @@ markdown/
 
 网站顶部可切换「中 / EN」，访客选择会在当前浏览器保存。分享英文页面可使用 `index.html?lang=en`，中文页面使用 `index.html?lang=zh`，文章 hash 链接仍然有效。
 
-`news/` 专门放首页顶部的动态，文件名使用 `YYYY-MM-DD-标题.md`。首页 News 按文件名倒序显示最近三条，文件名中的日期用于展示；动态同样参与全文搜索。
+`news/` 专门放本站动态，文件名使用 `YYYY-MM-DD-标题.md`。首页 News 与独立的 `#news` 页面按日期汇总本站和外站更新，首页展示最新三条；本站动态同样参与全文搜索。知乎、bilibili、领英的订阅与收录维护见 `agent/NEWS_SYNC.md`，不需要将外站全文复制到本目录。
 
 ```markdown
 # 我的文章标题

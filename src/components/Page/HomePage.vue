@@ -1,8 +1,9 @@
 <script setup>
 import heroAnimation from '@/assets/cfw_observe_model_live_hero.gif'
-import { notes as allNotes, news } from '@/data/notes.js'
+import { notes as allNotes } from '@/data/notes.js'
+import NewsStrip from '@/components/NewsStrip.vue'
 import { computed } from 'vue'
-import { locale, t, formatDate, noteCount } from '@/i18n.js'
+import { locale, t, noteCount } from '@/i18n.js'
 
 const notes = computed(() => allNotes.value.filter(note => !note.isNews))
 
@@ -15,16 +16,7 @@ const perspectives = computed(() => [
 
 <template>
   <div id="home" class="home-page">
-    <section id="news" class="news-column page-width" aria-labelledby="news-title">
-      <div class="news-heading"><h2 id="news-title">NEWS<span> / {{ t('近况', 'Updates') }}</span></h2><span class="news-dot" aria-hidden="true"></span></div>
-      <div class="news-items">
-        <a v-for="item in news.slice(0, 3)" :key="item.slug" :href="item.href" class="news-item">
-          <time v-if="item.date" :datetime="item.date">{{ formatDate(item.date) }}</time>
-          <span class="news-title">{{ item.title }}</span><span class="news-arrow" aria-hidden="true">↗</span>
-        </a>
-        <p v-if="!news.length" class="news-empty">{{ t('新的想法与进展，会在这里记录。', 'New ideas and progress will be shared here.') }}</p>
-      </div>
-    </section>
+    <NewsStrip />
     <section class="hero page-width" aria-labelledby="identity">
       <div class="hero-copy">
         <p class="eyebrow hero-eyebrow"><span class="small-cross">+</span> CALLINGFORWIND / {{ t('个人研究手记', 'PERSONAL FIELD NOTES') }}</p>
@@ -79,17 +71,6 @@ const perspectives = computed(() => [
 
 <style scoped>
 .page-width { width: min(1240px, calc(100% - 96px)); margin-inline: auto; }
-.news-column { display: grid; grid-template-columns: 156px 1fr; gap: 28px; align-items: start; padding-block: 24px; border-bottom: 1px solid var(--rule); }
-.news-heading { display: flex; align-items: center; gap: 16px; min-height: 26px; }
-.news-heading h2 { margin: 0; font: 0.7rem var(--mono); letter-spacing: 0.07em; }
-.news-heading h2 span { font: 0.65rem var(--serif); color: var(--muted); letter-spacing: 0; }
-.news-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--olive); }
-.news-item { display: flex; align-items: center; gap: 22px; min-height: 36px; padding-block: 5px; text-decoration: none; line-height: 1.6; }
-.news-item + .news-item { margin-top: 8px; }
-.news-item time { flex: 0 0 auto; color: #96907a; font: 0.6rem var(--mono); }
-.news-title { min-width: 0; overflow-wrap: anywhere; font-size: 0.8rem; }.news-arrow { margin-left: auto; color: var(--olive); }
-.news-item:hover .news-title { text-decoration: underline; text-underline-offset: 4px; }
-.news-empty { margin: 4px 0; color: var(--muted); font-size: 0.75rem; }
 .hero { display: grid; grid-template-columns: 1.15fr 1fr; align-items: center; gap: 64px; padding-block: 84px 72px; }
 .hero-eyebrow { display: flex; align-items: center; gap: 12px; font-size: 0.6rem; letter-spacing: 0.12em; }
 .small-cross { font-size: 1.1rem; color: var(--olive); }
@@ -150,8 +131,6 @@ h2 { margin: 12px 0 0; font-size: clamp(1.5rem, 2.2vw, 2rem); font-weight: 500; 
   .strip-label { display: none; }.perspective-card { padding: 24px 20px; }
 }
 @media (max-width: 760px) {
-  .news-column { grid-template-columns: 1fr; gap: 10px; padding-block: 20px; }
-  .news-item { gap: 14px; min-height: 44px; }.news-title { font-size: 0.75rem; }
   .page-width { width: calc(100% - 40px); }.hero { grid-template-columns: 1fr; padding-block: 44px 42px; gap: 48px; }
   h1 { font-size: clamp(1.8rem, 7vw, 3.3rem); margin-top: 24px; }.hero-copy { max-width: 560px; }
   .system-sheet { width: min(460px, 94%); margin: 0 auto; padding: 20px; }
@@ -198,8 +177,6 @@ figcaption { font-size: 0.95rem; line-height: 1.7; }
 .note-content p { font-size: 1rem; line-height: 1.85; color: #686354; overflow-wrap: anywhere; }
 .note-number { font-size: 0.85rem; }.note-label { font-size: 0.85rem; }
 .notebook-end { font-size: 1rem; line-height: 1.8; }
-.news-heading h2 { font-size: 0.9rem; }.news-heading h2 span { font-size: 0.85rem; }
-.news-title { font-size: 1rem; }.news-item time { font-size: 0.85rem; }.news-empty { font-size: 1rem; }
 @media (max-width: 1000px) {
   .hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; }
   .system-sheet { padding: 16px; }
@@ -219,6 +196,5 @@ figcaption { font-size: 0.95rem; line-height: 1.7; }
   .system-node strong { font-size: 1rem; }.system-node small { font-size: 0.8rem; }
   .model-animation { position: relative; inset: auto; grid-column: 1 / -1; width: 140px; height: 90px; margin-inline: auto; }
   .sheet-top { flex-wrap: wrap; }.identity-heading-en { font-size: clamp(1.8rem, 7.5vw, 2.8rem); }
-  .news-item { flex-wrap: wrap; gap: 10px 14px; }.news-title { flex: 1; }
 }
 </style>

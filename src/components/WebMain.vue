@@ -1,10 +1,12 @@
 <script setup>
 import { ref, computed, nextTick, onMounted, onUnmounted, defineAsyncComponent, watchEffect, h } from 'vue'
 import HomePage from '@/components/Page/HomePage.vue'
+import NewsPage from '@/components/Page/NewsPage.vue'
 import { notes } from '@/data/notes.js'
 import { t, formatDate } from '@/i18n.js'
 
 const currentSlug = ref('')
+const isNewsPage = ref(window.location.hash === '#news')
 const currentNote = computed(() => notes.value.find(note => note.slug === currentSlug.value) ?? null)
 const ContentPage = defineAsyncComponent({
   loader: () => import('@/components/Page/ContentPage.vue'),
@@ -17,20 +19,22 @@ const ContentPage = defineAsyncComponent({
 watchEffect(() => {
   const note = currentNote.value
   const identity = t('跨领域计算物理与 Physical AI 系统架构师', 'Cross-domain Computational Physics & Physical AI Systems Architect')
-  document.title = `${note?.title ?? identity} | Callingforwind`
+  const pageTitle = isNewsPage.value ? t('近况与平台更新', 'News & updates') : note?.title ?? identity
+  document.title = `${pageTitle} | Callingforwind`
   const description = document.querySelector('meta[name="description"]')
-  if (description) description.content = note?.description ?? `Callingforwind — ${identity}.`
+  if (description) description.content = isNewsPage.value ? t('Callingforwind 在知乎、bilibili、领英和个人网站的最近更新。', 'Recent updates from Callingforwind on Zhihu, bilibili, LinkedIn, and this website.') : note?.description ?? `Callingforwind — ${identity}.`
 })
 
 async function syncLocation() {
   const hash = window.location.hash
+  isNewsPage.value = hash === '#news'
   let slug = ''
   if (hash.startsWith('#note/')) {
     try { slug = decodeURIComponent(hash.slice(6)) } catch { /* Invalid fragment: show the home page. */ }
   }
   currentSlug.value = slug
   await nextTick()
-  if (currentNote.value) {
+  if (isNewsPage.value || currentNote.value) {
     window.scrollTo({ top: 0, behavior: 'instant' })
   } else if (hash) {
     document.getElementById(hash.slice(1))?.scrollIntoView()
@@ -47,9 +51,10 @@ onUnmounted(() => window.removeEventListener('hashchange', syncLocation))
 </script>
 
 <template>
-  <div v-if="currentNote" class="article-page">
+  <NewsPage v-if="isNewsPage" />
+  <div v-else-if="currentNote" class="article-page">
     <div class="article-heading">
-      <a class="back-link" href="#notes">← {{ t('返回研究笔记', 'Back to notes') }}</a>
+      <a class="back-link" :href="currentNote.isNews ? '#news' : '#notes'">← {{ currentNote.isNews ? t('返回 News', 'Back to News') : t('返回研究笔记', 'Back to notes') }}</a>
       <p class="eyebrow">{{ currentNote.category }} / {{ currentNote.date ? formatDate(currentNote.date) : currentNote.label }}</p>
       <h1>{{ currentNote.title }}</h1>
       <p v-if="currentNote.slug === 'vue3-github-pages-blog-deployment'" class="article-context">
