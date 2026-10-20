@@ -80,6 +80,6 @@ GitHub Pages 发布目录与入口说明：[GitHub 官方文档](https://docs.gi
 
 独立页面为 `index.html?lang=zh#news` / `index.html?lang=en#news`，提供知乎、bilibili、领英与本站更新的时间线、筛选和原文链接。主页配置在 `config/news-sources.json`，作者确认的条目在 `config/news-manual.json`。
 
-`npm run news:sync` 采集公开 RSS/Atom，`.github/workflows/sync-news.yml` 约每 30 分钟检查一次；浏览器打开时及每 5 分钟刷新公共快照。同步失败保留已有条目。2026-10-20 本机验证公共 RSSHub 返回 403/连接错误，尚未成功导入外站内容；领英个人动态受读取权限限制，目前使用作者收录与主页入口。页面可用与平台订阅可用是不同的验证结论，不能宣称三个平台已实时同步。配置可用订阅和收录方法见 `agent/NEWS_SYNC.md`。
+`npm run news:sync` 采集公开 RSS/Atom，`.github/workflows/sync-news.yml` 约每 30 分钟检查一次；浏览器打开时及每 5 分钟刷新公共快照。同步失败保留已有条目。2026-10-20 本机和 GitHub runner 验证公共 RSSHub 返回 403/连接错误，尚未成功导入外站内容；领英个人动态受读取权限限制，目前使用作者收录与主页入口。页面可用与平台订阅可用是不同的验证结论，不能宣称三个平台已实时同步。配置可用订阅和收录方法见 `agent/NEWS_SYNC.md`。
 
 远程仓库保留自定义域名 `callingforwind.top`，由根目录 `CNAME` 配置。GitHub Pages 地址可能跳转到 [正式网站](https://callingforwind.top/index.html)。

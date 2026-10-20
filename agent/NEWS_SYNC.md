@@ -34,7 +34,7 @@ GitHub 不会因 `GITHUB_TOKEN` 创建的提交自动构建 Pages，因此任务
 
 ## 访问限制与故障处理
 
-- 2026-10-20 本机联网验证：公共 RSSHub 知乎/B 站请求返回 403 或连接错误，尚未成功导入这些账号的外站条目。不要将页面/测试通过当作外站订阅已经可用；以快照中的各平台状态和真实条目为准。
+- 2026-10-20 本机联网验证：公共 RSSHub 知乎/B 站请求返回 403 或连接错误；GitHub runner 实际执行时这三个公开订阅请求也均返回 403，尚未成功导入这些账号的外站条目。不要将页面/测试/工作流通过当作外站订阅已经可用；以快照中的各平台状态和真实条目为准。
 - 收集失败时保留之前成功的条目和成功时间，显示同步暂不可用；部分来源失败使用 partial；只有有效空订阅才显示没有公开更新。网页取快照失败也保留已显示内容。
 - 可在仓库 Settings → Secrets and variables → Actions → Variables 配置公开可用的 `RSSHUB_BASE_URL`，替换默认实例，保留上述路由。仅使用自有或获准的订阅服务，不存放平台账号密码或 Cookie，也不绕过验证码和登录限制。
 - 手工运行且本机 Node 24 使用既有受信网络代理时，可用 `node --use-env-proxy scripts/sync-news.mjs`。普通网络和 GitHub runner 不需要此选项；不要关闭 TLS 校验。
@@ -62,6 +62,7 @@ GitHub 不会因 `GITHUB_TOKEN` 创建的提交自动构建 Pages，因此任务
 ## 验证依据
 
 - `npm run check` 包含 RSS/Atom 解析、失败保留、部分失败、排序/去重、链接安全、手工双语与删除测试。
+- 自动提交可能由 Linux 构建，本机 `dist/` 仍是之前的暂存。同步远程后若要本地执行字节一致性检查，先运行 `npm run build`，不将旧 `dist/` 与新发布物混作同一版本。
 - 页面测试应区分真实快照和仅用于本地的测试数据；后者不得写入公开 `public/news-feed.json`。
 - [GitHub GITHUB_TOKEN 与 Pages 说明](https://docs.github.com/en/actions/concepts/security/github_token)
 - [请求 Pages 构建](https://docs.github.com/en/rest/pages/pages#request-a-github-pages-build)
