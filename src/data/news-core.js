@@ -28,13 +28,20 @@ export function normalizePost(item, sources) {
   if (!source) return null
   const url = canonicalPostUrl(item.url, source.hosts)
   const publishedAt = isoDate(item.publishedAt)
-  const title = textVersions(item.title)
-  if (!url || !publishedAt || !Object.keys(title).length) return null
+  const collectedAt = isoDate(item.collectedAt)
+  const manual = item.origin === 'manual'
+  const providedTitle = textVersions(item.title)
+  const titlePending = item.titlePending === true || !Object.keys(providedTitle).length
+  if (!url || (!publishedAt && (!manual || !collectedAt)) || (!manual && titlePending)) return null
+  const title = titlePending ? {
+    zh: `${source.name?.zh ?? source.id}文章链接`,
+    en: `${source.name?.en ?? source.id} article link`,
+  } : providedTitle
   return {
-    id: `${source.id}:${url}`, source: source.id, url, publishedAt, title,
+    id: `${source.id}:${url}`, source: source.id, url, publishedAt, collectedAt, title, titlePending,
     summary: textVersions(item.summary),
     kind: ['article', 'video', 'post'].includes(item.kind) ? item.kind : 'post',
-    origin: item.origin === 'manual' ? 'manual' : 'feed',
+    origin: manual ? 'manual' : 'feed',
   }
 }
 
@@ -45,7 +52,7 @@ export function mergePosts(items, sources) {
     if (item) unique.set(item.id, { ...unique.get(item.id), ...item })
   }
   const counts = new Map()
-  return [...unique.values()].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
+  return [...unique.values()].sort((a, b) => (b.publishedAt ?? b.collectedAt).localeCompare(a.publishedAt ?? a.collectedAt))
     .filter(item => { const count = (counts.get(item.source) ?? 0) + 1; counts.set(item.source, count); return count <= 100 })
 }
 
@@ -54,8 +61,30 @@ export function localizedPost(item, language) {
   return {
     ...item, href: item.url, external: true, contentLocale,
     title: item.title[contentLocale], description: item.summary[language] ?? item.summary[contentLocale] ?? '',
-    date: item.publishedAt.slice(0, 10),
+    date: new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date(item.publishedAt ?? item.collectedAt)),
+    dateKind: item.publishedAt ? 'published' : 'collected',
   }
+}
+
+// A request containing just URLs is enough to save links. Metadata can be added
+// after reading the originals; never substitute today's date for publication.
+export function addArticleLinks(existing, links, sources, now = new Date().toISOString()) {
+  const records = [...existing]
+  const known = new Set(existing.map(item => {
+    const source = sources.find(source => source.id === item.source)
+    return source ? canonicalPostUrl(item.url, source.hosts) : ''
+  }))
+  for (const value of links) {
+    const source = sources.find(source => canonicalPostUrl(value, source.hosts))
+    if (!source) throw new Error('Article URL must belong to a configured public platform')
+    const url = canonicalPostUrl(value, source.hosts)
+    if (new URL(url).pathname.replace(/\/$/, '') === new URL(source.profileUrl).pathname.replace(/\/$/, '')) throw new Error('Provide an article link, not a profile link')
+    if (known.has(url)) continue
+    const kind = source.id === 'bilibili' && new URL(url).pathname.startsWith('/video/') ? 'video' : 'article'
+    records.push({ source: source.id, url, publishedAt: null, collectedAt: now, kind, title: {}, summary: {}, origin: 'manual' })
+    known.add(url)
+  }
+  return records
 }
 
 export function parseSnapshot(value, sources) {

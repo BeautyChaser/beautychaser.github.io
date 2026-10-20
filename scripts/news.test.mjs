@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { parseFeed, collectNews } from './news-feed.mjs'
-import { canonicalPostUrl, mergePosts, localizedPost, parseSnapshot } from '../src/data/news-core.js'
+import { canonicalPostUrl, mergePosts, localizedPost, parseSnapshot, addArticleLinks } from '../src/data/news-core.js'
 
 const source = { id: 'zhihu', hosts: ['zhuanlan.zhihu.com'], feeds: [{ url: 'https://feed.example/articles', language: 'zh', kind: 'article' }] }
 const linkedIn = { id: 'linkedin', hosts: ['www.linkedin.com'], feeds: [] }
@@ -52,4 +52,22 @@ test('curated posts can be translated and removed, original-language titles are 
   assert.equal(localizedPost(mergePosts([item], sources)[0], 'en').contentLocale, 'zh')
   const removed = await collectNews({ sources: [linkedIn], manual: [], previous: next, fetchFeed: async () => '' })
   assert.equal(removed.items.length, 0)
+})
+
+test('owner can collect links without guessing a title or publication date, and duplicate links stay unique', async () => {
+  const configured = [{ ...source, name: { zh: '知乎', en: 'Zhihu' }, profileUrl: 'https://www.zhihu.com/people/test-user', hosts: [...source.hosts, 'www.zhihu.com'], feeds: [] }]
+  const now = '2026-10-20T17:00:00.000Z'
+  const manual = addArticleLinks([], ['https://zhuanlan.zhihu.com/p/123?utm_source=test', 'https://zhuanlan.zhihu.com/p/123'], configured, now)
+  assert.equal(manual.length, 1)
+  assert.equal(manual[0].publishedAt, null)
+  assert.deepEqual(manual[0].title, {})
+  const next = await collectNews({ sources: configured, manual, previous: empty, now, fetchFeed: async () => { throw new Error('No automatic reads expected') } })
+  const localized = localizedPost(next.items[0], 'en')
+  assert.equal(localized.titlePending, true)
+  assert.equal(localized.dateKind, 'collected')
+  assert.equal(localized.date, '2026-10-21') // Beijing time, not the UTC calendar day.
+  assert.equal(localized.publishedAt, null)
+  assert.equal(addArticleLinks(manual, ['https://zhuanlan.zhihu.com/p/123'], configured, now).length, 1)
+  assert.throws(() => addArticleLinks([], ['https://www.zhihu.com/people/test-user'], configured, now), /not a profile/)
+  assert.throws(() => addArticleLinks([], ['https://malicious.example/post'], configured, now), /configured/)
 })

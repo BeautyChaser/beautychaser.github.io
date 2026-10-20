@@ -19,7 +19,7 @@ markdown/               # 自动收录、支持标题和正文搜索的 Markdown
 config/                 # 已确认的平台主页、订阅源和手工动态
 public/                 # 原样复制到发布目录的图标等文件
 scripts/                # 构建输出同步与验证
-.github/workflows/      # 公开订阅的定时同步
+.github/workflows/      # 链接收录变更后的快照整理与发布
 agent/                  # 换电脑、换模型后的维护与交接资料
 AGENTS.md               # 后续模型的维护入口
 reference/              # 原项目的设计参考
@@ -74,12 +74,14 @@ GitHub Pages 发布目录与入口说明：[GitHub 官方文档](https://docs.gi
 
 整个网站支持中英文切换，包括文章全文、News、搜索提示与联系区。中文文章使用 `文章.md`，英文使用 `文章.en.md`，配对后按同一篇文章展示；构建前会检查两种版本齐全。语言选择保存在浏览器，分享页面可以使用 `?lang=zh` 或 `?lang=en`。正文约 17px，手机通过重排保证可读性。
 
-联系区已加入知乎账号 **Callingforwind**，图标使用 **ZH**，支持展示、复制账号名和前往真实主页。
+联系区左侧保留邮箱和 GitHub，右侧名片仅展示微信、领英和 QQ。知乎、bilibili 和领英的公开主页统一放在 News；「前往主页 ↗」位于各平台卡片右上方。
 
 ## 跨平台 News
 
 独立页面为 `index.html?lang=zh#news` / `index.html?lang=en#news`，提供知乎、bilibili、领英与本站更新的时间线、筛选和原文链接。主页配置在 `config/news-sources.json`，作者确认的条目在 `config/news-manual.json`。
 
-`npm run news:sync` 采集公开 RSS/Atom，`.github/workflows/sync-news.yml` 约每 30 分钟检查一次；浏览器打开时及每 5 分钟刷新公共快照。同步失败保留已有条目。2026-10-20 本机和 GitHub runner 验证公共 RSSHub 返回 403/连接错误，尚未成功导入外站内容；领英个人动态受读取权限限制，目前使用作者收录与主页入口。页面可用与平台订阅可用是不同的验证结论，不能宣称三个平台已实时同步。配置可用订阅和收录方法见 `agent/NEWS_SYNC.md`。
+以后直接告诉维护 AI「同步这些文章」并附链接即可，由 AI 收录、核实可访问的原文信息、构建和发布。不能读取原文时先保存链接，明确显示收录日期，补充标题后继续更新。批量加入链接可用 `npm run news:add -- "文章链接"`，再运行 `npm run news:sync`、构建和检查。
+
+当前三个平台采用按链接收录，已经关闭每 30 分钟的失败抓取；GitHub 工作流改为收录配置变更或手动触发。浏览器仍能读取最新已发布快照。只有确认可用的公开来源才启用自动订阅。完整流程见 `agent/NEWS_SYNC.md`。
 
 远程仓库保留自定义域名 `callingforwind.top`，由根目录 `CNAME` 配置。GitHub Pages 地址可能跳转到 [正式网站](https://callingforwind.top/index.html)。

@@ -14,7 +14,7 @@ import { t, formatDate } from '@/i18n.js'
         <a v-for="source in platforms" :key="source.id" :href="source.profileUrl" target="_blank" rel="noopener noreferrer"><span>{{ source.short }}</span> {{ platformName(source.id) }} ↗</a>
       </div>
       <a v-for="item in updates.slice(0, 3)" :key="item.id" class="strip-update" :href="item.href" :target="item.external ? '_blank' : undefined" :rel="item.external ? 'noopener noreferrer' : undefined">
-        <time v-if="item.date" :datetime="item.date">{{ formatDate(item.date) }}</time>
+        <span class="strip-date"><span v-if="item.dateKind === 'collected'">{{ t('收录于', 'Added') }} </span><time v-if="item.date" :datetime="item.date">{{ formatDate(item.date) }}</time></span>
         <span class="source-tag">{{ platformMark(item.source) }}</span>
         <span class="update-title" :lang="item.contentLocale === 'en' ? 'en' : 'zh-CN'">{{ item.title }}</span><span class="update-arrow" aria-hidden="true">↗</span>
       </a>
@@ -35,6 +35,7 @@ import { t, formatDate } from '@/i18n.js'
 .platform-links a > span { font: 0.8rem var(--mono); color: var(--olive); }
 .strip-update { display: grid; grid-template-columns: 118px 44px minmax(0, 1fr) 16px; gap: 16px; align-items: baseline; padding-block: 8px; text-decoration: none; line-height: 1.7; }
 .strip-update time { color: #79735f; font: 0.85rem/1.7 var(--mono); }
+.strip-date { color: #79735f; font: 0.85rem/1.7 var(--mono); }
 .source-tag { color: var(--olive); font: 0.8rem/1.7 var(--mono); }
 .update-title { font-size: 1.05rem; overflow-wrap: anywhere; }
 .update-arrow { color: var(--olive); }
@@ -44,7 +45,7 @@ import { t, formatDate } from '@/i18n.js'
 @media (max-width: 760px) { .news-strip { grid-template-columns: 1fr; gap: 12px; padding-block: 20px; }.strip-heading { flex-direction: row; justify-content: space-between; align-items: center; }.platform-links { gap: 4px 18px; } }
 @media (max-width: 480px) {
   .strip-update { grid-template-columns: auto 1fr auto; gap: 2px 12px; padding-block: 10px; }
-  .strip-update time { grid-column: 1; grid-row: 1; }.source-tag { grid-column: 2; grid-row: 1; }
+  .strip-date { grid-column: 1; grid-row: 1; }.source-tag { grid-column: 2; grid-row: 1; }
   .update-title { grid-column: 1 / 3; grid-row: 2; }.update-arrow { grid-column: 3; grid-row: 2; }
 }
 </style>

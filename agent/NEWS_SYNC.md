@@ -1,71 +1,70 @@
-# 平台动态维护
+# News 链接收录与维护
 
-## 页面与数据
+## 用户当前选择的流程
 
-- 首页顶栏由 `src/components/NewsStrip.vue` 展示跨平台最新三条和平台主页入口。
-- `index.html?lang=zh#news` / `index.html?lang=en#news` 是独立 News 页面，由 `NewsPage.vue` 渲染，支持平台筛选、原文链接、刷新和空状态。
-- 本站动态继续维护在 `markdown/news/`，保持中文 `.md` / 英文 `.en.md` 配对和全文检索。
-- 平台账号、短标记、允许的原文域名、订阅地址在 `config/news-sources.json`。当前账号由用户于 2026-10-20 明确提供：
-  - 知乎：<https://www.zhihu.com/people/zhu-yao-mei-zhui>，名称 Callingforwind，短标记 `ZH`。
-  - bilibili：<https://space.bilibili.com/354151470>，名称 Callingforwind。
-  - 领英：<https://www.linkedin.com/in/jinfeng-zhao-641647296/>，名称 Jinfeng Zhao。
-- 不将 `account.bilibili.com/account/home` 账号设置页用作公开主页，不猜测其他用户 URL。
-- `config/news-manual.json` 是作者确认的外站条目；默认空数组，没有伪造的样例新闻。
-- `public/news-feed.json` 为采集源文件；构建复制成根目录 `news-feed.json`，后者不直接编辑。
-- `src/data/news-core.js` 负责链接验证、去重、日期和语言；`news.js` 将外站条目与本站动态合并供两个页面共用。
+2026-10-20 用户明确调整：不能自动同步的平台，每次由用户直接告诉 AI「同步这些文章」并提供链接，AI 完成收录与发布，不要求用户手工编辑 JSON。
 
-## 自动同步的实际含义
+知乎、bilibili、领英当前均采用按链接收录，config/news-sources.json 中的 feeds 为空。原公共 RSSHub 在本机和 GitHub runner 均返回过 403，已移除每 30 分钟的定时抓取。之后只有确认可用的来源才启用其自动读取能力。
 
-```shell
-npm run news:sync
-npm run build
-npm run check
-```
+## AI 收到「同步」与文章链接后
 
-`scripts/sync-news.mjs` 在服务端读取 RSS/Atom，通过 RSSHub 订阅知乎文章、B 站视频和图文。采集只保留标题、最多 240 字摘要、日期、类型和原文 URL，不转发整篇外站内容。外站标题/摘要保留原语言，若作者提供译文可按当前界面语言选择；界面文案仍完整双语。
+1. 阅读 AGENTS.md、本文件和 HANDOFF.md，检查 Git 状态及远程新提交，保留用户改动。
+2. 区分文章链接与平台主页，使用用户明确提供的文章/视频链接，不将主页当作文章。当前平台身份均由用户确认：
+   - 知乎：<https://www.zhihu.com/people/zhu-yao-mei-zhui>，Callingforwind，标记 ZH。
+   - bilibili：<https://space.bilibili.com/354151470>，Callingforwind。
+   - 领英：<https://www.linkedin.com/in/jinfeng-zhao-641647296/>，Jinfeng Zhao。
+3. 读取可公开访问的原文，核实标题、真实发布时间与简短摘要，可提供实际翻译的中英文内容，不复制整篇外站文章。不绕过登录、验证码或访问限制，不保存平台凭据。
+4. 可执行批量命令：`npm run news:add -- "真实文章链接" "另一条真实文章链接"`。它自动识别平台、去除跟踪参数并去重，更新 config/news-manual.json。
+5. 能核实原文信息时补齐 title、summary 和 publishedAt，保留 collectedAt。无法访问时先仅收录链接：publishedAt 为 null，显示通用链接名称及标题待补充说明，日期明确标为「收录于」，不是发布时间。用户只给链接也能收录；不得为补齐字段编造原文信息。
+6. 运行 `npm run news:sync`、`npm run build` 和 `npm run check`，检查首页汇总、独立 News、平台筛选、原文 URL、日期类型与中英文。
+7. 按当前会话已经获得的发布授权正常提交、推送 main 并验证正式页面；不得强制推送。更新交接文档，说明收录条数以及哪些原文信息尚未获取。
 
-`.github/workflows/sync-news.yml` 按 UTC 每小时第 17、47 分钟执行（约每 30 分钟），可从 GitHub Actions 手动运行。定时任务在默认分支生效，GitHub 调度可能延迟；公开仓库长期无活动也可能停用 schedule，需要在 Actions 中重新启用。定时同步不是实时推送。
+用户可以直接说：「把这些链接同步到 News：……」。这表示维护网站，不表示在知乎、B 站或领英发布内容或发送消息。
 
-任务安装锁定依赖、采集、构建并检查，将源快照和根目录输出一起正常提交到 `main`。仅授予仓库内容与 Pages 写权限，不使用个人令牌。并发推送若遇到非快进错误，任务停止，下一次从最新 `main` 重试；不要强制推送。
+## 目录与界面
 
-GitHub 不会因 `GITHUB_TOKEN` 创建的提交自动构建 Pages，因此任务显式请求分支 Pages 构建。网站在线时还会读取配置中的 GitHub Raw 公共快照，避免动态完全依赖 Pages 重建；保留发布快照作为回退。访客打开页面、切回页面或每 5 分钟会检查一次数据，按钮可以立即检查现有快照。浏览器刷新不会直接抓取知乎/B 站，也不会立即启动后台采集。
+- src/components/NewsStrip.vue：首页最新三条。
+- src/components/Page/NewsPage.vue：独立的 index.html?lang=zh#news / index.html?lang=en#news，包含筛选、刷新、原文与空状态。
+- 三个平台的「前往主页 ↗」位于卡片头部右侧原箭头位置，底部不重复。
+- 页脚左侧仅邮箱与 GitHub；右侧名片仅微信、领英、QQ。知乎与 bilibili 放在 News，不加回联系区。
+- config/news-sources.json：平台主页、短标记、允许的原文域名、可选的有效订阅。
+- config/news-manual.json：用户提供的文章条目。
+- scripts/add-news-links.mjs：批量加入链接；scripts/sync-news.mjs：整理手工条目及可用订阅。
+- public/news-feed.json：快照源；构建复制为根目录 news-feed.json，后者不直接编辑。
+- src/data/news-core.js：校验、去重、日期、缺失元信息与语言；news.js：合并本站动态并刷新快照。
+- 本站动态仍在 markdown/news/，保持中文 .md / 英文 .en.md 配对和标题、正文搜索。
 
-本地 `localhost`/`127.0.0.1` 与开发模式不读取 GitHub Raw，确保预览使用本地最新数据。换仓库或分支后同步修改 `liveFeedUrl`。新版本不会被旧快照覆盖。
-
-## 访问限制与故障处理
-
-- 2026-10-20 本机联网验证：公共 RSSHub 知乎/B 站请求返回 403 或连接错误；GitHub runner 实际执行时这三个公开订阅请求也均返回 403，尚未成功导入这些账号的外站条目。不要将页面/测试/工作流通过当作外站订阅已经可用；以快照中的各平台状态和真实条目为准。
-- 收集失败时保留之前成功的条目和成功时间，显示同步暂不可用；部分来源失败使用 partial；只有有效空订阅才显示没有公开更新。网页取快照失败也保留已显示内容。
-- 可在仓库 Settings → Secrets and variables → Actions → Variables 配置公开可用的 `RSSHUB_BASE_URL`，替换默认实例，保留上述路由。仅使用自有或获准的订阅服务，不存放平台账号密码或 Cookie，也不绕过验证码和登录限制。
-- 手工运行且本机 Node 24 使用既有受信网络代理时，可用 `node --use-env-proxy scripts/sync-news.mjs`。普通网络和 GitHub runner 不需要此选项；不要关闭 TLS 校验。
-- 领英个人动态读取是受限权限，当前未实现自动抓取。保留主页入口，由作者提供条目；只有存在适用且获准的订阅源时再接入 `feeds`，不能显示为已经自动同步。
-- 知乎目前订阅的是个人文章；如需回答/想法等内容，接入实际可用的公开订阅并验证，不能将文章订阅描述成覆盖所有知乎活动。
-- 新平台可以添加配置与公开订阅，原文链接必须位于其允许域名内。微信/QQ 私人联系账号不作为公开文章源。
-
-## 收录一条外站动态
-
-向 `config/news-manual.json` 的数组中添加真实条目。以下是格式说明，URL 和标题须替换为作者确认的真实内容，不直接发布本例：
+## 条目格式
 
 ```json
 {
   "source": "linkedin",
-  "url": "https://www.linkedin.com/posts/替换为真实动态地址",
-  "publishedAt": "2026-10-20T08:00:00+08:00",
-  "kind": "post",
-  "title": { "zh": "已确认的中文标题", "en": "Confirmed English title" },
-  "summary": { "zh": "作者提供的摘要。", "en": "An excerpt supplied by the author." }
+  "url": "https://www.linkedin.com/posts/真实动态地址",
+  "publishedAt": null,
+  "collectedAt": "2026-10-20T22:00:00+08:00",
+  "kind": "article",
+  "title": {},
+  "summary": {},
+  "origin": "manual"
 }
 ```
 
-`source` 为平台 ID，`kind` 可为 `article`、`video` 或 `post`；`title` 至少一种真实语言，未翻译时按原语言展示，不伪造机器翻译。`publishedAt` 必须为真实发布时间，明确时区。手工条目可更新与删除，采集不覆盖手工译文。运行同步、构建、检查后正常提交；手工配置推送也会触发同步任务。
+此例只说明格式，不作为真实新闻发布。title / summary 可填中文 zh 与英文 en；没有译文时保留原语言。已知发布时间时用它排序；未知时按真实收录时间排序，显示北京时间，并明确日期含义。
 
-## 验证依据
+## 发布与可选自动来源
 
-- `npm run check` 包含 RSS/Atom 解析、失败保留、部分失败、排序/去重、链接安全、手工双语与删除测试。
-- 自动提交可能由 Linux 构建，本机 `dist/` 仍是之前的暂存。同步远程后若要本地执行字节一致性检查，先运行 `npm run build`，不将旧 `dist/` 与新发布物混作同一版本。
-- 页面测试应区分真实快照和仅用于本地的测试数据；后者不得写入公开 `public/news-feed.json`。
-- [GitHub GITHUB_TOKEN 与 Pages 说明](https://docs.github.com/en/actions/concepts/security/github_token)
+.github/workflows/sync-news.yml 在手动运行或收录配置变更时执行，不再有 schedule。任务整理快照、构建、检查并正常提交发布物，再请求 main / (root) 的 Pages 更新。
+
+浏览器打开时、切回页面时和每 5 分钟读取最新公共快照；「刷新动态」读取已发布快照，不会擅自访问平台账号。GitHub 使用 GITHUB_TOKEN 的提交不会自动触发分支 Pages，因此任务显式请求构建，网页也读取配置里的 GitHub Raw 快照并保留本地发布快照回退。换仓库/分支时更新 liveFeedUrl，本地预览只用本地快照。
+
+RSS/Atom 解析能力保留，只对已验证可用、获准的公开来源配置 feeds。若重新启用定时执行，按用户当时的意图设置，不悄悄恢复对失败来源的重复抓取。失败保留最近成功内容，不伪装成成功或空订阅。
+
+自动提交可能由 Linux 构建；同步远程后若要本地字节检查，先运行 npm run build，避免与旧 dist/ 混比。并发推送先同步远程，不强制覆盖。
+
+## 验证与参考
+
+- npm run check 覆盖链接收录/去重、缺失元信息、北京时间收录日期、RSS/Atom、失败保留、手工译文与删除。
+- 私有测试数据只放忽略的 .tmp/，不提交为真实外站动态。
+- [GitHub GITHUB_TOKEN 与 Pages](https://docs.github.com/en/actions/concepts/security/github_token)
 - [请求 Pages 构建](https://docs.github.com/en/rest/pages/pages#request-a-github-pages-build)
-- [GitHub 定时事件及其限制](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule)
-- [领英官方读取权限说明](https://learn.microsoft.com/en-us/linkedin/marketing/lms-faq)
-- [RSSHub 知乎文章路由](https://github.com/DIYgod/RSSHub/blob/master/lib/routes/zhihu/posts.ts)、[B 站视频路由](https://github.com/DIYgod/RSSHub/blob/master/lib/routes/bilibili/video.ts)、[B 站图文路由](https://github.com/DIYgod/RSSHub/blob/master/lib/routes/bilibili/article.ts)
+- [领英个人动态读取权限](https://learn.microsoft.com/en-us/linkedin/marketing/lms-faq)

@@ -36,7 +36,8 @@
 | `config/news-sources.json` / `config/news-manual.json` | 用户确认的平台主页、订阅源与手工条目 | 是 |
 | `scripts/sync-news.mjs` / `scripts/news-feed.mjs` | 采集公开 RSS/Atom、保留缓存与同步状态 | 是 |
 | `public/news-feed.json` / 根目录 `news-feed.json` | 采集快照源文件 / 构建复制的公开快照 | 采集 / 通过构建更新 |
-| `.github/workflows/sync-news.yml` | 每 30 分钟采集、构建、提交快照并请求 Pages 更新 | 是 |
+| `scripts/add-news-links.mjs` | AI 按用户给定链接批量收录、去重，允许暂缺原文信息 | 是 |
+| `.github/workflows/sync-news.yml` | 收录配置变更/手动触发，构建并发布快照，无定时抓取 | 是 |
 | `src/components/Contact.vue` | 联系区与社交账号展示 | 是 |
 | `src/components/MarkdownLoader.vue` | Markdown、公式、代码渲染 | 是 |
 | `src/components/Page/ContentPage.vue` | 文章正文容器，阅读时按需加载渲染器 | 是 |
@@ -68,6 +69,6 @@
 9. **全站中英文切换。** 默认中文，顶部切换按钮更新全部界面、文章与元数据，并保存浏览器偏好。URL 中 `?lang=en` / `?lang=zh` 可指定分享语言，优先于已保存偏好；文章 hash 保持不变。
 10. **译文按文件配对。** `.md` 或 `.zh.md` 对应中文，`.en.md` 对应英文；数据目录将它们合并为同一篇文章。搜索覆盖两种语言，结果只计一次并以当前语言显示。构建前必须通过双语完整性检查。
 11. **保留已有自定义域名。** 远程提交 `c52a983` 添加 `CNAME`，内容为 `callingforwind.top`；已快进同步，发布时保留。GitHub Pages 域名可能跳转到该域名，线上验证需检查最终地址。
-12. **独立的跨平台 News。** `#news` 渲染独立页面；首页顶部汇总本站与公开平台最新三条。知乎、bilibili 和领英的真实主页由用户提供。服务端定时采集与浏览器读取公共快照分开，失败保留最近成功内容；领英目前由作者收录，不宣称实时或自动抓取已成功。详见 `NEWS_SYNC.md`。
+12. **独立的跨平台 News。** `#news` 渲染独立页面；首页顶部汇总本站与公开平台最新三条。三个真实主页由用户提供。用户现选择直接向 AI 提供文章链接，由 AI 收录发布；当前无定时平台抓取，仅对确认可用的来源保留自动能力。没有原文信息时标明标题待补充与收录日期，不编造发布时间。详见 `NEWS_SYNC.md`。
 
 最初参考工程来自 `D:\ProgramPj\MyWebPage\my_web_page`。该路径仅记录来源，不是构建依赖。原工程中的旧 README 包含强制推送步骤，当前维护不采用该流程。

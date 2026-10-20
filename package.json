@@ -8,6 +8,7 @@
     "build": "node scripts/check-translations.mjs && vite build && node scripts/sync-pages.mjs",
     "check": "node --test scripts/content.test.mjs scripts/news.test.mjs && node scripts/check-translations.mjs && node scripts/check-pages.mjs",
     "news:sync": "node scripts/sync-news.mjs",
+    "news:add": "node scripts/add-news-links.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

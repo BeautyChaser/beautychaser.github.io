@@ -16,11 +16,6 @@
               <a href="mailto:beauty7chaser@gmail.com" class="val">beauty7chaser@gmail.com</a>
             </div>
             <div class="item">
-              <span class="key">{{ t('知乎：', 'Zhihu:') }}</span>
-              <button type="button" class="val account-link" :aria-label="t('复制知乎账号 Callingforwind', 'Copy Zhihu account Callingforwind')" @click="handleIconClick('zhihu')">Callingforwind</button>
-              <a class="platform-home-link" :href="socialData.zhihu.profileUrl" target="_blank" rel="noopener noreferrer">{{ t('主页', 'Profile') }} ↗</a>
-            </div>
-            <div class="item">
               <span class="key">Github:</span>
               <a href="https://github.com/BeautyChaser" target="_blank" rel="noopener noreferrer" class="val">@BeautyChaser</a>
             </div>
@@ -85,13 +80,6 @@ const socialData = computed(() => ({
     label: 'Beauty7Chaser',
     color: '#2e7d32' // 微信绿
   },
-  tw: {
-    name: t('Bilibili 账号', 'Bilibili account'),
-    iconText: 'Bili',
-    label: 'Callingforwind',
-    profileUrl: profile('bilibili'),
-    color: '#FB7299' // B站粉
-  },
   in: {
     name: t('LinkedIn 账号', 'LinkedIn account'),
     iconText: 'In',
@@ -104,13 +92,6 @@ const socialData = computed(() => ({
     iconText: 'QQ',
     label: '584830702',
     color: '#d71b1b' // QQ红
-  },
-  zhihu: {
-    name: t('知乎账号', 'Zhihu account'),
-    iconText: 'ZH',
-    label: 'Callingforwind',
-    profileUrl: profile('zhihu'),
-    color: '#1769c2',
   },
 }));
 

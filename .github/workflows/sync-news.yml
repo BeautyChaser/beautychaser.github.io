@@ -1,8 +1,6 @@
-name: Sync public platform updates
+name: Publish collected platform updates
 
 on:
-  schedule:
-    - cron: '17,47 * * * *'
   workflow_dispatch:
   push:
     branches: [main]
@@ -33,7 +31,7 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci
-      - name: Collect public feeds and retain saved updates
+      - name: Collect confirmed links and available public feeds
         run: npm run news:sync
         env:
           RSSHUB_BASE_URL: ${{ vars.RSSHUB_BASE_URL }}

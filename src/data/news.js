@@ -15,7 +15,7 @@ export const platformMark = id => platforms.find(source => source.id === id)?.sh
 export const updates = computed(() => [
   ...siteNews.value.map(note => ({ ...note, id: `site:${note.slug}`, source: 'site', kind: 'article', contentLocale: locale.value, external: false })),
   ...snapshot.value.items.map(item => localizedPost(item, locale.value)),
-].sort((a, b) => (b.publishedAt ?? b.date ?? '').localeCompare(a.publishedAt ?? a.date ?? '')))
+].sort((a, b) => (b.publishedAt ?? b.collectedAt ?? b.date ?? '').localeCompare(a.publishedAt ?? a.collectedAt ?? a.date ?? '')))
 
 async function readSnapshot(url) {
   const response = await fetch(url, { cache: 'no-store', signal: AbortSignal.timeout(8000), headers: { Accept: 'application/json' } })
