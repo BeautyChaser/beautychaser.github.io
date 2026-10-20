@@ -9,11 +9,12 @@
 ## AI 收到「同步」与文章链接后
 
 1. 阅读 AGENTS.md、本文件和 HANDOFF.md，检查 Git 状态及远程新提交，保留用户改动。
-2. 区分文章链接与平台主页，使用用户明确提供的文章/视频链接，不将主页当作文章。当前平台身份均由用户确认：
+2. 区分文章链接与平台主页，使用用户明确提供的文章/视频链接；若用户要求从其主页查找文章，可通过浏览器读取该账号的已发表文章列表。不将主页、草稿、回答或收藏的他人文章当作本人文章。当前平台身份均由用户确认：
    - 知乎：<https://www.zhihu.com/people/zhu-yao-mei-zhui>，Callingforwind，标记 ZH。
    - bilibili：<https://space.bilibili.com/354151470>，Callingforwind。
    - 领英：<https://www.linkedin.com/in/jinfeng-zhao-641647296/>，Jinfeng Zhao。
 3. 读取可公开访问的原文，核实标题、真实发布时间与简短摘要，可提供实际翻译的中英文内容，不复制整篇外站文章。不绕过登录、验证码或访问限制，不保存平台凭据。
+   - 2026-10-20 已使用用户 Chrome 的现有登录会话读取知乎「文章 8」列表，并通过主页「发表了文章」动态核对发表时间。公开订阅受限不代表浏览器不可读取；可使用已获授权的正常浏览器会话，不能读取凭据或绕过登录。
 4. 可执行批量命令：`npm run news:add -- "真实文章链接" "另一条真实文章链接"`。它自动识别平台、去除跟踪参数并去重，更新 config/news-manual.json。
 5. 能核实原文信息时补齐 title、summary 和 publishedAt，保留 collectedAt。无法访问时先仅收录链接：publishedAt 为 null，显示通用链接名称及标题待补充说明，日期明确标为「收录于」，不是发布时间。用户只给链接也能收录；不得为补齐字段编造原文信息。
 6. 运行 `npm run news:sync`、`npm run build` 和 `npm run check`，检查首页汇总、独立 News、平台筛选、原文 URL、日期类型与中英文。

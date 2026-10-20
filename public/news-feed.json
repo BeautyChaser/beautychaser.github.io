@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-20T14:58:39.848Z",
+  "generatedAt": "2026-10-20T15:13:18.608Z",
   "sources": [
     {
       "id": "zhihu",
@@ -21,5 +21,150 @@
       "lastSuccessAt": null
     }
   ],
-  "items": []
+  "items": [
+    {
+      "id": "zhihu:https://zhuanlan.zhihu.com/p/2095191699635040264",
+      "source": "zhihu",
+      "url": "https://zhuanlan.zhihu.com/p/2095191699635040264",
+      "publishedAt": "2026-10-18T08:44:00.000Z",
+      "collectedAt": "2026-10-20T15:12:11.361Z",
+      "title": {
+        "zh": "当代码越来越容易生成，软件公司的护城河还剩什么？答案可能是“可验证的知识资产”",
+        "en": "As Code Gets Easier to Generate, What Moat Remains for Software Companies? Perhaps Verifiable Knowledge Assets"
+      },
+      "titlePending": false,
+      "summary": {
+        "zh": "从企业核心资产与工程验证出发，讨论经过工况、精度、性能和失效测试的行业解决方案，如何形成可靠的可执行知识体系。",
+        "en": "How industry solutions tested across operating conditions, accuracy, performance and failure cases can form reliable, executable knowledge assets."
+      },
+      "kind": "article",
+      "origin": "manual"
+    },
+    {
+      "id": "zhihu:https://zhuanlan.zhihu.com/p/2095188946330312711",
+      "source": "zhihu",
+      "url": "https://zhuanlan.zhihu.com/p/2095188946330312711",
+      "publishedAt": "2026-10-18T08:36:00.000Z",
+      "collectedAt": "2026-10-20T15:12:11.361Z",
+      "title": {
+        "zh": "从“读懂每一行代码”到掌握“白板层”：AI 时代开发者应该为哪一层负责？",
+        "en": "From Reading Every Line of Code to Owning the Whiteboard Layer: What Should Developers Be Responsible for in the AI Era?"
+      },
+      "titlePending": false,
+      "summary": {
+        "zh": "围绕白板层、Agent/Harness 与人机协作，讨论开发者如何掌握系统结构、行为、接口契约与验收标准，并要求可复现的实现证据。",
+        "en": "A discussion of the whiteboard layer, Agent/Harness and human–AI collaboration: owning structure, behavior, interface contracts and acceptance criteria, with reproducible evidence."
+      },
+      "kind": "article",
+      "origin": "manual"
+    },
+    {
+      "id": "zhihu:https://zhuanlan.zhihu.com/p/2095186809944806743",
+      "source": "zhihu",
+      "url": "https://zhuanlan.zhihu.com/p/2095186809944806743",
+      "publishedAt": "2026-10-18T08:25:00.000Z",
+      "collectedAt": "2026-10-20T15:12:11.361Z",
+      "title": {
+        "zh": "为什么 AI 会让程序员突然失去安全感？它可能是软件史上的下一层“编译器”",
+        "en": "Why Does AI Make Programmers Feel Insecure? It May Be the Next Compiler Layer in Software History"
+      },
+      "titlePending": false,
+      "summary": {
+        "zh": "从技术抽象、信任与认知边界出发，讨论 AI 将抽象延伸到理解、规划和部分决策后，工程信任体系需要如何演进。",
+        "en": "How engineering trust must evolve as AI extends technical abstraction into understanding, planning and some decisions, alongside the limits of human cognition."
+      },
+      "kind": "article",
+      "origin": "manual"
+    },
+    {
+      "id": "zhihu:https://zhuanlan.zhihu.com/p/2095183877081978066",
+      "source": "zhihu",
+      "url": "https://zhuanlan.zhihu.com/p/2095183877081978066",
+      "publishedAt": "2026-10-18T08:17:00.000Z",
+      "collectedAt": "2026-10-20T15:12:11.361Z",
+      "title": {
+        "zh": "AI 时代真正改变的，不是写代码，而是谁掌握软件的“定义权”",
+        "en": "The Real Change in the AI Era Is Who Gets to Define Software, Beyond Who Writes the Code"
+      },
+      "titlePending": false,
+      "summary": {
+        "zh": "系列精编版，从技术抽象、白板层与可验证知识资产三个视角，讨论 AI 时代软件定义与工程责任的变化。",
+        "en": "A condensed overview of the series, examining software definition and engineering responsibility through technical abstraction, the whiteboard layer and verifiable knowledge assets."
+      },
+      "kind": "article",
+      "origin": "manual"
+    },
+    {
+      "id": "zhihu:https://zhuanlan.zhihu.com/p/2085136192450860402",
+      "source": "zhihu",
+      "url": "https://zhuanlan.zhihu.com/p/2085136192450860402",
+      "publishedAt": "2026-09-20T15:05:00.000Z",
+      "collectedAt": "2026-10-20T15:12:11.361Z",
+      "title": {
+        "zh": "AI 时代真正稀缺的，不再是知识，而是架构、判断与方向",
+        "en": "In the AI Era, Architecture, Judgment and Direction Are Becoming Scarcer Than Knowledge"
+      },
+      "titlePending": false,
+      "summary": {
+        "zh": "从“知识就是力量”的前提出发，讨论 AI 改变知识获取与调用方式后，架构、判断和方向为何变得更加关键。",
+        "en": "Starting from the idea that knowledge is power, this article explores why architecture, judgment and direction matter as AI changes access to knowledge."
+      },
+      "kind": "article",
+      "origin": "manual"
+    },
+    {
+      "id": "zhihu:https://zhuanlan.zhihu.com/p/2080775100954043435",
+      "source": "zhihu",
+      "url": "https://zhuanlan.zhihu.com/p/2080775100954043435",
+      "publishedAt": "2026-09-08T14:19:00.000Z",
+      "collectedAt": "2026-10-20T15:12:11.361Z",
+      "title": {
+        "zh": "从 Prompt 到 Protocol：渐进式约束下的人机协同工程架构",
+        "en": "From Prompt to Protocol: An Engineering Architecture for Human–AI Collaboration Under Progressive Constraints"
+      },
+      "titlePending": false,
+      "summary": {
+        "zh": "在 AI 实现能力持续增强的背景下，讨论搜索空间、价值判断、约束演进与控制权，探索人机协作的工程架构。",
+        "en": "An engineering view of human–AI collaboration through search spaces, value judgments, evolving constraints and control as AI implementation capabilities grow."
+      },
+      "kind": "article",
+      "origin": "manual"
+    },
+    {
+      "id": "zhihu:https://zhuanlan.zhihu.com/p/2080770959234147565",
+      "source": "zhihu",
+      "url": "https://zhuanlan.zhihu.com/p/2080770959234147565",
+      "publishedAt": "2026-09-08T13:50:00.000Z",
+      "collectedAt": "2026-10-20T15:12:11.361Z",
+      "title": {
+        "zh": "AI 时代，算法工程师真正需要掌握的，可能已经不是“写代码”",
+        "en": "In the AI Era, What Algorithm Engineers Need to Master May Go Beyond Writing Code"
+      },
+      "titlePending": false,
+      "summary": {
+        "zh": "讨论生成式 AI、代码 Agent 与自动化工具，如何改变算法工程师从问题理解、算法设计、实现到测试与交付的工作方式。",
+        "en": "How generative AI, coding agents and automation are changing algorithm engineering, from problem understanding and algorithm design to implementation, testing and delivery."
+      },
+      "kind": "article",
+      "origin": "manual"
+    },
+    {
+      "id": "zhihu:https://zhuanlan.zhihu.com/p/2079640638509823369",
+      "source": "zhihu",
+      "url": "https://zhuanlan.zhihu.com/p/2079640638509823369",
+      "publishedAt": "2026-09-05T10:44:00.000Z",
+      "collectedAt": "2026-10-20T15:12:11.361Z",
+      "title": {
+        "zh": "世界模型不是“整个世界”：从大模型、Agent 到 Physical AI 的一条工程化演化路径",
+        "en": "A World Model Is Not the Whole World: An Engineering Path from Large Models and Agents to Physical AI"
+      },
+      "titlePending": false,
+      "summary": {
+        "zh": "以工程与仿真为视角，讨论从大模型、Agent 到世界模型、机器人与 Physical AI 的演化，以及状态建模与闭环控制。",
+        "en": "An engineering and simulation perspective on the path from large models and agents to world models, robotics and Physical AI, through state modeling and closed-loop control."
+      },
+      "kind": "article",
+      "origin": "manual"
+    }
+  ]
 }
