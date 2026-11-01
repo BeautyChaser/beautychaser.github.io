@@ -1,5 +1,21 @@
 [
   {
+    "source": "bilibili",
+    "url": "https://www.bilibili.com/video/BV1onxb6rEqp",
+    "publishedAt": "2026-11-01T21:58:02+08:00",
+    "collectedAt": "2026-11-01T14:29:13.172306+00:00",
+    "kind": "video",
+    "origin": "manual",
+    "title": {
+      "zh": "一段15秒AI视频，如何让我重写创作流程｜三平台创作复盘",
+      "en": "How a 15-Second AI Video Led Me to Rework My Creative Workflow: A Three-Platform Retrospective"
+    },
+    "summary": {
+      "zh": "从Liblib Wan 3.0、豆包旧资产试验到即梦Seedance 2.0 VIP，复盘人物、运镜、美术与声音的取舍，并保留“也从容”附近嘴部约束失效的原片证据。",
+      "en": "A retrospective spanning Liblib Wan 3.0, Doubao trials with the older character reference, and Jimeng Seedance 2.0 VIP, including art direction, camera movement, sound, and the unresolved mouth movement during inner narration."
+    }
+  },
+  {
     "source": "zhihu",
     "url": "https://zhuanlan.zhihu.com/p/2095191699635040264",
     "publishedAt": "2026-10-18T16:44:00+08:00",

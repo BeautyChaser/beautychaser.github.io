@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-20T15:15:13.041Z",
+  "generatedAt": "2026-11-01T14:40:53.999Z",
   "sources": [
     {
       "id": "zhihu",
@@ -22,6 +22,24 @@
     }
   ],
   "items": [
+    {
+      "id": "bilibili:https://www.bilibili.com/video/BV1onxb6rEqp",
+      "source": "bilibili",
+      "url": "https://www.bilibili.com/video/BV1onxb6rEqp",
+      "publishedAt": "2026-11-01T13:58:02.000Z",
+      "collectedAt": "2026-11-01T14:29:13.172Z",
+      "title": {
+        "zh": "一段15秒AI视频，如何让我重写创作流程｜三平台创作复盘",
+        "en": "How a 15-Second AI Video Led Me to Rework My Creative Workflow: A Three-Platform Retrospective"
+      },
+      "titlePending": false,
+      "summary": {
+        "zh": "从Liblib Wan 3.0、豆包旧资产试验到即梦Seedance 2.0 VIP，复盘人物、运镜、美术与声音的取舍，并保留“也从容”附近嘴部约束失效的原片证据。",
+        "en": "A retrospective spanning Liblib Wan 3.0, Doubao trials with the older character reference, and Jimeng Seedance 2.0 VIP, including art direction, camera movement, sound, and the unresolved mouth movement during inner narration."
+      },
+      "kind": "video",
+      "origin": "manual"
+    },
     {
       "id": "zhihu:https://zhuanlan.zhihu.com/p/2095191699635040264",
       "source": "zhihu",
